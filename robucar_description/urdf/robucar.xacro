@@ -78,16 +78,16 @@
     </joint>
 
     <!-- Wheel macros -->
-    <xacro:jaguar_wheel_steered wheel_prefix="front_left">
+    <xacro:jaguar_wheel_steered wheel_prefix="front_left" parent_link="base_link">
       <origin xyz="${wheelbase/2+wheel_x_offset} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
     </xacro:jaguar_wheel_steered>
-    <xacro:jaguar_wheel_steered wheel_prefix="front_right">
+    <xacro:jaguar_wheel_steered wheel_prefix="front_right" parent_link="base_link">
       <origin xyz="${wheelbase/2+wheel_x_offset} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
     </xacro:jaguar_wheel_steered>
-    <xacro:jaguar_wheel_steered wheel_prefix="rear_left">
+    <xacro:jaguar_wheel_steered wheel_prefix="rear_left" parent_link="base_link">
       <origin xyz="${-wheelbase/2+wheel_x_offset} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
     </xacro:jaguar_wheel_steered>
-    <xacro:jaguar_wheel_steered wheel_prefix="rear_right">
+    <xacro:jaguar_wheel_steered wheel_prefix="rear_right" parent_link="base_link">
       <origin xyz="${-wheelbase/2+wheel_x_offset} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
     </xacro:jaguar_wheel_steered>
 

@@ -5,18 +5,18 @@
 
   <xacro:include filename="$(find robucar_description)/urdf/wheel.xacro" />
 
-  <xacro:macro name="jaguar_wheel_steered" params="wheel_prefix *joint_pose">
-    <xacro:jaguar_wheel wheel_prefix="${wheel_prefix}">
-      <xacro:insert_block name="joint_pose"/>
+  <xacro:macro name="jaguar_wheel_steered" params="wheel_prefix parent_link *joint_origin">
+    <xacro:jaguar_wheel wheel_prefix="${wheel_prefix}" parent_link="${wheel_prefix}_steering">
+      <origin xyz="0 0 0" rpy="0 0 0" />
     </xacro:jaguar_wheel>
 
     <link name="${wheel_prefix}_steering"/>
     <joint name="${wheel_prefix}_steering_joint" type="revolute">
       <limit lower="-1.57075" upper="1.57075" effort="-1" velocity="-1"/>
       <axis xyz="0 0 1"/>
-      <parent link="base_link"/>
+      <parent link="${parent_link}"/>
       <child link="${wheel_prefix}_steering"/>
-      <xacro:insert_block name="joint_pose"/>
+      <xacro:insert_block name="joint_origin"/>
     </joint>
 
   </xacro:macro>
