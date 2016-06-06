@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+
+<robot name="robucar" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:arg name="laser_enabled" default="false" />
+  <xacro:arg name="camera_enabled" default="false" />
+  <xacro:arg name="navsat_enabled" default="true" />
+
+  <xacro:include filename="$(find robucar_description)/urdf/wheel_steered.xacro" />
+
+  <xacro:property name="M_PI" value="3.14159"/>
+
+  <!-- Base Size -->
+  <xacro:property name="base_x_size" value="0.50000" />
+  <xacro:property name="base_y_size" value="0.37000" />
+  <xacro:property name="base_z_size" value="0.17000" />
+
+  <!-- Wheel Mounting Positions -->
+  <xacro:property name="wheelbase" value="0.35" />
+  <xacro:property name="track" value="0.48" />
+  <xacro:property name="wheel_vertical_offset" value="-0.06" />
+  <xacro:property name="wheel_x_offset" value="-0.02" />
+
+  <!-- Wheel Properties -->
+  <xacro:property name="wheel_length" value="0.09" />
+  <xacro:property name="wheel_radius" value="0.13" />
+
+  <xacro:macro name="robucar">
+    <!-- Base footprint is on the ground under the robot -->
+    <link name="base_footprint"/>
+
+    <gazebo reference="base_link">
+      <material>Gazebo/Grey</material>
+    </gazebo>
+    <!-- Base link is the center of the robot's bottom plate -->
+    <link name="base_link">
+      <visual>
+        <geometry>
+          <box size="${base_x_size} ${base_y_size} ${base_z_size}"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.6 0.6 0.6 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${base_x_size} ${base_y_size} ${base_z_size}"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="base_footprint_joint" type="fixed">
+      <origin xyz="0 0 ${-wheel_vertical_offset + wheel_radius}" rpy="0 0 0" />
+      <child link="base_link" />
+      <parent link="base_footprint" />
+    </joint>
+
+    <!-- Interial link stores the robot's inertial information -->
+    <link name="inertial_link">
+      <inertial>
+        <mass value="33.455" />
+        <origin xyz="-0.08748 -0.00085 0.09947" />
+        <inertia ixx="0.6022" ixy="-0.02364" ixz="-0.1197" iyy="1.7386" iyz="-0.001544" izz="2.0296" />
+      </inertial>
+    </link>
+
+    <joint name="inertial_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="inertial_link" />
+    </joint>
+
+    <!-- IMU Link is the standard mounting position for the IMU.-->
+    <link name="imu_link"/>
+    <joint name="imu_joint" type="fixed">
+      <origin xyz="0.35 0 0.1" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="imu_link" />
+    </joint>
+
+    <!-- Wheel macros -->
+    <xacro:jaguar_wheel_steered wheel_prefix="front_left">
+      <origin xyz="${wheelbase/2+wheel_x_offset} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    </xacro:jaguar_wheel_steered>
+    <xacro:jaguar_wheel_steered wheel_prefix="front_right">
+      <origin xyz="${wheelbase/2+wheel_x_offset} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    </xacro:jaguar_wheel_steered>
+    <xacro:jaguar_wheel_steered wheel_prefix="rear_left">
+      <origin xyz="${-wheelbase/2+wheel_x_offset} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    </xacro:jaguar_wheel_steered>
+    <xacro:jaguar_wheel_steered wheel_prefix="rear_right">
+      <origin xyz="${-wheelbase/2+wheel_x_offset} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    </xacro:jaguar_wheel_steered>
+
+    <xacro:if value="$(arg laser_enabled)">
+      <!-- Hokuyo UTM-30LX mounted upside down below the body -->
+      <!--<xacro:include filename="$(find urg_description)/urdf/hokuyo_utm30lx.urdf.xacro" />
+      <xacro:hokuyo_utm30lx name="laser0" parent="base_link" ros_topic="scan" update_rate="40" ray_count="1081" min_angle="-135" max_angle="135">
+        <origin xyz="0.35 0.0 0.0" rpy="${M_PI} 0 0"/>
+      </xacro:hokuyo_utm30lx>-->
+
+      <!--<xacro:include filename="$(find urg_description)/urdf/hokuyo_urg_04lx_ug01_laser.urdf.xacro" />
+      <xacro:hokuyo_urg_04lx_ug01_laser name="laser0" parent="base_link" ros_topic="scan" update_rate="40" min_angle="-135" max_angle="135">
+        <origin xyz="0.35 0.0 0.0" rpy="${M_PI} 0 0"/>
+      </xacro:hokuyo_urg_04lx_ug01_laser>-->
+    </xacro:if>
+
+    <xacro:if value="$(arg camera_enabled)">
+      <link name="camera_link"/>
+      <joint name="camera_joint" type="fixed">
+        <origin xyz="0.35 0 0.41" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="camera_link" />
+      </joint>
+    </xacro:if>
+
+    <xacro:if value="$(arg navsat_enabled)">
+      <link name="navsat_link"/>
+      <joint name="navsat_joint" type="fixed">
+        <origin xyz="0.3 0 0.3" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="navsat_link" />
+      </joint>
+    </xacro:if>
+  </xacro:macro>
+</robot>

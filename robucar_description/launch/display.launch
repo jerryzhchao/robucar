@@ -1,8 +1,8 @@
 <launch>
 
-  <arg name="model" default="$(find blinky_description)/urdf/blinky.urdf"/>
+  <arg name="model" default="$(find robucar_description)/urdf/description.xacro"/>
   <arg name="gui" default="true" />
-  <arg name="rvizconfig" default="$(find blinky_description)/rviz/urdf.rviz" />
+  <arg name="rvizconfig" default="$(find robucar_description)/rviz/urdf.rviz" />
 
   <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
   <param name="use_gui" value="$(arg gui)"/>

@@ -1,0 +1,13 @@
+<launch>
+
+  <arg name="model" default="$(find robucar_description)/urdf/description.xacro"/>
+  <arg name="laser_enabled" default="true" />
+  <arg name="camera_enabled" default="false" />
+
+  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)
+    laser_enabled:=$(arg laser_enabled)
+    camera_enabled:=$(arg camera_enabled)" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+</launch>
