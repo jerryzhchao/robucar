@@ -11,19 +11,23 @@
   <xacro:property name="M_PI" value="3.14159"/>
 
   <!-- Base Size -->
-  <xacro:property name="base_x_size" value="0.50000" />
-  <xacro:property name="base_y_size" value="0.37000" />
-  <xacro:property name="base_z_size" value="0.17000" />
+  <xacro:property name="base_x_size" value="1.66000" />
+  <xacro:property name="base_y_size" value="0.60000" />
+  <xacro:property name="base_z_size" value="0.66000" />
 
   <!-- Wheel Mounting Positions -->
-  <xacro:property name="wheelbase" value="0.35" />
-  <xacro:property name="track" value="0.48" />
-  <xacro:property name="wheel_vertical_offset" value="-0.06" />
-  <xacro:property name="wheel_x_offset" value="-0.02" />
+  <xacro:property name="wheelbase" value="1.22" />
+  <xacro:property name="track" value="1.23" />
+  <xacro:property name="ground_clearance" value="0.19" />
+  <xacro:property name="wheel_x_offset" value="0.0" />
 
   <!-- Wheel Properties -->
-  <xacro:property name="wheel_length" value="0.09" />
-  <xacro:property name="wheel_radius" value="0.13" />
+  <xacro:property name="wheel_length" value="0.1" />
+  <xacro:property name="wheel_radius" value="0.28" />
+
+  <!-- LIDAR Properties -->
+  <xacro:property name="lidar_ground_clearance" value="0.69" />
+  <xacro:property name="lidar_x_offset" value="0.4" />
 
   <xacro:macro name="robucar">
     <!-- Base footprint is on the ground under the robot -->
@@ -49,7 +53,7 @@
       </collision>
     </link>
     <joint name="base_footprint_joint" type="fixed">
-      <origin xyz="0 0 ${-wheel_vertical_offset + wheel_radius}" rpy="0 0 0" />
+      <origin xyz="0 0 ${ground_clearance + base_z_size/2}" rpy="0 0 0" />
       <child link="base_link" />
       <parent link="base_footprint" />
     </joint>
@@ -57,9 +61,11 @@
     <!-- Interial link stores the robot's inertial information -->
     <link name="inertial_link">
       <inertial>
-        <mass value="33.455" />
+        <mass value="330" />
         <origin xyz="-0.08748 -0.00085 0.09947" />
-        <inertia ixx="0.6022" ixy="-0.02364" ixz="-0.1197" iyy="1.7386" iyz="-0.001544" izz="2.0296" />
+        <inertia ixx="0.6022" ixy="-0.02364" ixz="-0.1197"
+                 iyy="1.7386" iyz="-0.001544"
+                 izz="2.0296" />
       </inertial>
     </link>
 
@@ -79,6 +85,19 @@
 
     <!-- Wheel macros -->
     <xacro:wheel_steered wheel_prefix="front_left" parent_link="base_link">
+      <origin xyz="${wheelbase/2+wheel_x_offset} ${track/2} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
+    </xacro:wheel_steered>
+    <xacro:wheel_steered wheel_prefix="front_right" parent_link="base_link">
+      <origin xyz="${wheelbase/2+wheel_x_offset} ${-track/2} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
+    </xacro:wheel_steered>
+    <xacro:wheel wheel_prefix="rear_left" parent_link="base_link">
+      <origin xyz="${-wheelbase/2+wheel_x_offset} ${track/2} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
+    </xacro:wheel>
+    <xacro:wheel wheel_prefix="rear_right" parent_link="base_link">
+      <origin xyz="${-wheelbase/2+wheel_x_offset} ${-track/2} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
+    </xacro:wheel>
+
+    <!--<xacro:wheel_steered wheel_prefix="front_left" parent_link="base_link">
       <origin xyz="${wheelbase/2+wheel_x_offset} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
     </xacro:wheel_steered>
     <xacro:wheel_steered wheel_prefix="front_right" parent_link="base_link">
@@ -89,19 +108,14 @@
     </xacro:wheel_steered>
     <xacro:wheel_steered wheel_prefix="rear_right" parent_link="base_link">
       <origin xyz="${-wheelbase/2+wheel_x_offset} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-    </xacro:wheel_steered>
+    </xacro:wheel_steered>-->
 
     <xacro:if value="$(arg laser_enabled)">
       <!-- Hokuyo UTM-30LX mounted upside down below the body -->
       <!--<xacro:include filename="$(find urg_description)/urdf/hokuyo_utm30lx.urdf.xacro" />
       <xacro:hokuyo_utm30lx name="laser0" parent="base_link" ros_topic="scan" update_rate="40" ray_count="1081" min_angle="-135" max_angle="135">
-        <origin xyz="0.35 0.0 0.0" rpy="${M_PI} 0 0"/>
+        <origin xyz="${lidar_x_offset} 0.0 ${lidar_ground_clearance - base_z_size/2 - ground_clearance}" rpy="0 0 0"/>
       </xacro:hokuyo_utm30lx>-->
-
-      <!--<xacro:include filename="$(find urg_description)/urdf/hokuyo_urg_04lx_ug01_laser.urdf.xacro" />
-      <xacro:hokuyo_urg_04lx_ug01_laser name="laser0" parent="base_link" ros_topic="scan" update_rate="40" min_angle="-135" max_angle="135">
-        <origin xyz="0.35 0.0 0.0" rpy="${M_PI} 0 0"/>
-      </xacro:hokuyo_urg_04lx_ug01_laser>-->
     </xacro:if>
 
     <xacro:if value="$(arg camera_enabled)">

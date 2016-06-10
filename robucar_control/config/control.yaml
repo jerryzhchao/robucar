@@ -6,8 +6,8 @@ robucar_velocity_controller:
   type: "ackermann_controller/AckermannController"
   left_wheel: ['front_left_wheel', 'rear_left_wheel']
   right_wheel: ['front_right_wheel', 'rear_right_wheel']
-  left_steering: ['front_left_steering']
-  right_steering: ['front_right_steering']
+  left_steering: ['front_left_steering_joint']
+  right_steering: ['front_right_steering_joint']
   publish_rate: 50
   pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
   twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
@@ -23,7 +23,8 @@ robucar_velocity_controller:
   # Robucar hardware provides wheel velocities
   estimate_velocity_from_position: true
 
-  wheel_base: 0.5
+  wheel_separation: 1.23
+  wheel_base: 1.22
   # Wheel separation and radius multipliers
   wheel_separation_multiplier: 1.0 # default: 1.0
   wheel_radius_multiplier    : 1.0 # default: 1.0
