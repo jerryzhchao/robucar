@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package>
+  <name>robucar_control</name>
+  <version>0.1.0</version>
+  <description>Robucar controller configurations</description>
+
+  <author email="vincentrou@gmail.com">Vincent Rousseau</author>
+
+  <maintainer email="vincentrou@gmail.com">Vincent Rousseau</maintainer>
+
+  <license>BSD</license>
+
+  <!--<url type="website">http://ros.org/wiki/robucar_control</url>-->
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>interactive_marker_twist_server</run_depend>
+  <run_depend>ackermann_controller</run_depend>
+  <run_depend>joint_state_controller</run_depend>
+  <run_depend>joint_trajectory_controller</run_depend>
+  <run_depend>joy</run_depend>
+  <run_depend>robot_localization</run_depend>
+  <run_depend>rostopic</run_depend>
+  <run_depend>controller_manager</run_depend>
+  <run_depend>teleop_twist_joy</run_depend>
+  <run_depend>teleop_twist_keyboard</run_depend>
+  <run_depend>twist_mux</run_depend>
+
+  <export>
+  </export>
+</package>

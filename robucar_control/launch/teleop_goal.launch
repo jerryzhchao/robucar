@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <group ns="joy_teleop">
+    <node pkg="robucar_control" type="teleop_goal.py" name="teleop_goal" output="screen"/>
+  </group>
+
+</launch>

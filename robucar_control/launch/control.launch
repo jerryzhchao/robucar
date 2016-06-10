@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<launch>
+
+  <rosparam command="load" file="$(find robucar_control)/config/control.yaml" />
+
+  <node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="robucar_joint_publisher robucar_velocity_controller --shutdown-timeout 3"/>
+
+  <!--<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
+    <rosparam command="load" file="$(find robucar_control)/config/localization.yaml" />
+  </node>-->
+  <!--<node pkg="robot_localization" type="ukf_localization_node" name="ukf_localization">
+    <rosparam command="load" file="$(find robucar_control)/config/localization.yaml" />
+  </node>-->
+
+  <!--<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_gps">
+    <rosparam command="load" file="$(find robucar_control)/config/localization_gps.yaml" />
+    <remap from="/odometry/filtered" to="/odometry/filtered_gps" />
+  </node>
+
+  <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true">
+        <param name="magnetic_declination_radians" value="0"/>
+        <param name="yaw_offset" value="1.5707963"/>
+        <param name="zero_altitude" value="true"/>
+        <param name="publish_filtered_gps" value="false"/>
+        <param name="broadcast_utm_transform" value="false"/>
+
+        <remap from="/imu/data" to="/imu/data" />
+        <remap from="/gps/fix" to="/navsat/fix" />
+        <remap from="/odometry/filtered" to="/odometry/filtered_gps" />
+  </node>-->
+
+  <!--<node pkg="interactive_marker_twist_server" type="marker_server" name="twist_marker_server" output="screen"/>
+
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux">
+    <rosparam command="load" file="$(find robucar_control)/config/twist_mux.yaml" />
+    <remap from="cmd_vel_out" to="robucar_velocity_controller/cmd_vel"/>
+  </node>-->
+
+  <!--Teleop -->
+  <!--<include file="$(find robucar_control)/launch/teleop.launch" />-->
+  <include file="$(find robucar_control)/launch/teleop_keyboard.launch" />
+</launch>

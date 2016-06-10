@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <name>robucar_gazebo</name>
+  <version>0.1.0</version>
+  <description>Robucar Simulator bringup</description>
+
+  <author email="vincentrou@gmail.com">Vincent Rousseau</author>
+
+  <maintainer email="vincentrou@gmail.com">Vincent Rousseau</maintainer>
+
+  <license>BSD</license>
+
+  <!--<url type="website">http://ros.org/wiki/robucar_gazebo</url>-->
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roslaunch</build_depend>
+  <run_depend>controller_manager</run_depend>
+  <run_depend>gazebo_plugins</run_depend>
+  <run_depend>gazebo_ros</run_depend>
+  <run_depend>gazebo_ros_control</run_depend>
+<!--  <run_depend>hector_gazebo_plugins</run_depend>-->
+<!--  <run_depend>hector_gazebo_worlds</run_depend>-->
+  <run_depend>robucar_description</run_depend>
+  <run_depend>robot_state_publisher</run_depend>
+  <run_depend>rostopic</run_depend>
+
+  <export>
+  </export>
+</package>

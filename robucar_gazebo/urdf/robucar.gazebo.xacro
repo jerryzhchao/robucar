@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<robot name="robucar_robot_gazebo" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find robucar_gazebo)/urdf/accessories/sick_lms100.gazebo.xacro"/>
+  <xacro:include filename="$(find robucar_gazebo)/urdf/accessories/kinect_camera.gazebo.xacro"/>
+
+  <xacro:macro name="robucar_robot_gazebo">
+
+    <gazebo>
+      <plugin name="imu_controller" filename="libhector_gazebo_ros_imu.so">
+        <updateRate>100.0</updateRate>
+        <bodyName>base_link</bodyName>
+        <topicName>imu/data</topicName>
+        <accelDrift>0.005 0.005 0.005</accelDrift>
+        <accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>
+        <rateDrift>0.005 0.005 0.005 </rateDrift>
+        <rateGaussianNoise>0.005 0.005 0.005 </rateGaussianNoise>
+        <headingDrift>0.005</headingDrift>
+        <headingGaussianNoise>0.005</headingGaussianNoise>
+      </plugin>
+    </gazebo>
+
+    <gazebo>
+      <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
+        <updateRate>10</updateRate>
+        <bodyName>base_link</bodyName>
+        <frameId>base_link</frameId>
+        <topicName>navsat/fix</topicName>
+        <velocityTopicName>navsat/vel_simul</velocityTopicName>
+        <referenceLatitude>49.9</referenceLatitude>
+        <referenceLongitude>8.9</referenceLongitude>
+        <referenceHeading>0</referenceHeading>
+        <referenceAltitude>0</referenceAltitude>
+        <drift>0.05 0.05 0.05</drift>
+        <gaussianNoise>0.01 0.01 0.01</gaussianNoise>
+        <velocityDrift>0 0 0</velocityDrift>
+        <velocityGaussianNoise>0.01 0.01 0.01</velocityGaussianNoise>
+      </plugin>
+    </gazebo>
+
+    <xacro:if value="$(arg laser_enabled)">
+      <gazebo reference="laser_bracket_link">
+        <material>Gazebo/DarkGrey</material>
+      </gazebo>
+      <xacro:sick_lms100_gazebo prefix="base"/>
+    </xacro:if>
+
+    <xacro:if value="$(arg camera_enabled)">
+      <xacro:kinect_camera_gazebo prefix="camera"/>
+    </xacro:if>
+    <!--<gazebo reference="sensor_camera">
+      <sensor name="sensor_camera" type="depth">
+        <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <camera>
+        <horizontal_fov>1.578</horizontal_fov>
+        <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+        </image>
+        <clip near="0.01" far="100.0" />
+        <save enabled="false" path="/tmp" />
+        <depth_camera output="points" />
+        </camera>
+        <plugin name="plugin_1" filename="libgazebo_ros_depth_camera.so">
+            <alwaysOn>1</alwaysOn>
+            <updateRate>25.0</updateRate>
+            <imageTopicName>image_raw</imageTopicName>
+            <pointCloudTopicName>points</pointCloudTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <cameraName>depth_cam</cameraName>
+            <frameName>/base_link</frameName>
+            <pointCloudCutoff>0.001</pointCloudCutoff>
+            <distortionK1>0.00000001</distortionK1>
+            <distortionK2>0.00000001</distortionK2>
+            <distortionK3>0.00000001</distortionK3>
+            <distortionT1>0.00000001</distortionT1>
+            <distortionT2>0.00000001</distortionT2>
+        </plugin>
+        <always_on>true</always_on>
+        <update_rate>10.0</update_rate>
+      </sensor>
+    </gazebo>-->
+  </xacro:macro>
+
+</robot>
+

@@ -1,0 +1,73 @@
+digraph robucar_playpen {
+	graph [compound=True,
+		fontsize=35,
+		nodesep=2,
+		ranksep=2,
+		ratio=0.772727272727
+	];
+	node [fontsize=35,
+		label="\N"
+	];
+	edge [fontsize=35];
+	subgraph cluster_robucar_gazebo {
+		graph [label=robucar_gazebo,
+			penwidth=3
+		];
+		launch_robucar_gazebo_robucar_playpen		 [fillcolor="#d3d3d3",
+			label="robucar_playpen.launch",
+			shape=rectangle,
+			style=filled];
+		launch_robucar_gazebo_robucar_empty_world		 [fillcolor="#d3d3d3",
+			label="robucar_empty_world.launch",
+			shape=rectangle,
+			style=filled];
+		launch_robucar_gazebo_spawn_robucar		 [fillcolor="#d3d3d3",
+			label="spawn_robucar.launch",
+			shape=rectangle,
+			style=filled];
+	}
+	subgraph cluster_robot_state_publisher {
+		graph [label=robot_state_publisher,
+			penwidth=3
+		];
+		node_robot_state_publisher_robot_state_publisher_robot_state_publisher		 [fillcolor="#6495ed",
+			label=robot_state_publisher,
+			shape=rectangle,
+			style=filled];
+	}
+	subgraph cluster_gazebo_ros {
+		graph [label=gazebo_ros,
+			penwidth=3
+		];
+		launch_gazebo_ros_empty_world		 [fillcolor="#d3d3d3",
+			label="empty_world.launch",
+			shape=rectangle,
+			style=filled];
+		node_gazebo_ros_debug_gazebo		 [fillcolor="#6495ed",
+			label=gazebo,
+			shape=rectangle,
+			style=filled];
+		node_gazebo_ros_gzclient_gazebo_gui		 [fillcolor="#6495ed",
+			label=gazebo_gui,
+			shape=rectangle,
+			style=filled];
+		node_gazebo_ros_spawn_model_spawn_robucar_model		 [fillcolor="#6495ed",
+			label=spawn_robucar_model,
+			shape=rectangle,
+			style=filled];
+	}
+	launch_robucar_gazebo_robucar_playpen -> launch_robucar_gazebo_robucar_empty_world	 [color=black,
+		penwidth=3];
+	launch_robucar_gazebo_robucar_empty_world -> launch_robucar_gazebo_spawn_robucar	 [color=black,
+		penwidth=3];
+	launch_robucar_gazebo_robucar_empty_world -> launch_gazebo_ros_empty_world	 [color=black,
+		penwidth=3];
+	launch_robucar_gazebo_spawn_robucar -> node_robot_state_publisher_robot_state_publisher_robot_state_publisher	 [color=black,
+		penwidth=3];
+	launch_robucar_gazebo_spawn_robucar -> node_gazebo_ros_spawn_model_spawn_robucar_model	 [color=black,
+		penwidth=3];
+	launch_gazebo_ros_empty_world -> node_gazebo_ros_debug_gazebo	 [color=black,
+		penwidth=3];
+	launch_gazebo_ros_empty_world -> node_gazebo_ros_gzclient_gazebo_gui	 [color=black,
+		penwidth=3];
+}
