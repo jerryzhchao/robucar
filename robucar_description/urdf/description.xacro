@@ -4,7 +4,7 @@
   <xacro:arg name="camera_enabled" default="false" />
   <xacro:arg name="navsat_enabled" default="true" />
 
-  <xacro:include filename="$(find robucar_description)/urdf/robucar.xacro" />
+  <xacro:include filename="$(find robucar_description)/urdf/robucar.urdf.xacro" />
   <xacro:robucar />
 
 </robot>

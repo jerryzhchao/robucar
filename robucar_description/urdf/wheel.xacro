@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro" name="jaguar_wheel">
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="wheel">
 
   <!--<xacro:property name="M_PI" default="3.14159"/>
   <xacro:property name="wheel_length" default="0.09" />
   <xacro:property name="wheel_radius" default="0.13" />-->
 
-  <xacro:macro name="jaguar_wheel" params="wheel_prefix parent_link *joint_origin">
+  <xacro:macro name="wheel" params="wheel_prefix parent_link *joint_origin">
     <gazebo reference="${wheel_prefix}_wheel_link">
       <material>Gazebo/Black</material>
     </gazebo>

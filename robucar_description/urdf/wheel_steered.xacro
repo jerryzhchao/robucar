@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
 
-<robot xmlns:xacro="http://ros.org/wiki/xacro" name="jaguar_wheel_steered">
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="wheel_steered">
 
   <xacro:include filename="$(find robucar_description)/urdf/wheel.xacro" />
 
-  <xacro:macro name="jaguar_wheel_steered" params="wheel_prefix parent_link *joint_origin">
-    <xacro:jaguar_wheel wheel_prefix="${wheel_prefix}" parent_link="${wheel_prefix}_steering">
+  <xacro:macro name="wheel_steered" params="wheel_prefix parent_link *joint_origin">
+    <xacro:wheel wheel_prefix="${wheel_prefix}" parent_link="${wheel_prefix}_steering">
       <origin xyz="0 0 0" rpy="0 0 0" />
-    </xacro:jaguar_wheel>
+    </xacro:wheel>
 
     <link name="${wheel_prefix}_steering"/>
     <joint name="${wheel_prefix}_steering_joint" type="revolute">

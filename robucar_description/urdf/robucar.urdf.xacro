@@ -4,7 +4,7 @@
 
   <xacro:arg name="laser_enabled" default="false" />
   <xacro:arg name="camera_enabled" default="false" />
-  <xacro:arg name="navsat_enabled" default="true" />
+  <xacro:arg name="navsat_enabled" default="false" />
 
   <xacro:include filename="$(find robucar_description)/urdf/wheel_steered.xacro" />
 
@@ -78,18 +78,18 @@
     </joint>
 
     <!-- Wheel macros -->
-    <xacro:jaguar_wheel_steered wheel_prefix="front_left" parent_link="base_link">
+    <xacro:wheel_steered wheel_prefix="front_left" parent_link="base_link">
       <origin xyz="${wheelbase/2+wheel_x_offset} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-    </xacro:jaguar_wheel_steered>
-    <xacro:jaguar_wheel_steered wheel_prefix="front_right" parent_link="base_link">
+    </xacro:wheel_steered>
+    <xacro:wheel_steered wheel_prefix="front_right" parent_link="base_link">
       <origin xyz="${wheelbase/2+wheel_x_offset} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-    </xacro:jaguar_wheel_steered>
-    <xacro:jaguar_wheel_steered wheel_prefix="rear_left" parent_link="base_link">
+    </xacro:wheel_steered>
+    <xacro:wheel_steered wheel_prefix="rear_left" parent_link="base_link">
       <origin xyz="${-wheelbase/2+wheel_x_offset} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-    </xacro:jaguar_wheel_steered>
-    <xacro:jaguar_wheel_steered wheel_prefix="rear_right" parent_link="base_link">
+    </xacro:wheel_steered>
+    <xacro:wheel_steered wheel_prefix="rear_right" parent_link="base_link">
       <origin xyz="${-wheelbase/2+wheel_x_offset} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-    </xacro:jaguar_wheel_steered>
+    </xacro:wheel_steered>
 
     <xacro:if value="$(arg laser_enabled)">
       <!-- Hokuyo UTM-30LX mounted upside down below the body -->
