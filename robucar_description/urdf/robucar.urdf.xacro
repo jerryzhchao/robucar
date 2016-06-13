@@ -10,7 +10,8 @@
 
   <xacro:property name="M_PI" value="3.14159"/>
 
-  <!-- Base Size -->
+  <!-- Base Properties -->
+  <xacro:property name="mass_base" value="340" />
   <xacro:property name="base_x_size" value="1.66000" />
   <xacro:property name="base_y_size" value="0.60000" />
   <xacro:property name="base_z_size" value="0.66000" />
@@ -20,6 +21,7 @@
   <xacro:property name="track" value="1.23" />
   <xacro:property name="ground_clearance" value="0.19" />
   <xacro:property name="wheel_x_offset" value="0.0" />
+  <xacro:property name="wheel_y_offset" value="0.05" />
 
   <!-- Wheel Properties -->
   <xacro:property name="wheel_length" value="0.1" />
@@ -61,11 +63,11 @@
     <!-- Interial link stores the robot's inertial information -->
     <link name="inertial_link">
       <inertial>
-        <mass value="330" />
-        <origin xyz="-0.08748 -0.00085 0.09947" />
-        <inertia ixx="0.6022" ixy="-0.02364" ixz="-0.1197"
-                 iyy="1.7386" iyz="-0.001544"
-                 izz="2.0296" />
+        <mass value="340" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="${mass_base/12.0 * (base_y_size*base_y_size + base_z_size*base_z_size)}" ixy="0" ixz="0"
+                 iyy="${mass_base/12.0 * (base_x_size*base_x_size + base_z_size*base_z_size)}" iyz="0"
+                 izz="${mass_base/12.0 * (base_y_size*base_y_size + base_x_size*base_x_size)}" />
       </inertial>
     </link>
 
@@ -84,11 +86,11 @@
     </joint>
 
     <!-- Wheel macros -->
-    <xacro:wheel_steered wheel_prefix="front_left" parent_link="base_link">
-      <origin xyz="${wheelbase/2+wheel_x_offset} ${track/2} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
+    <xacro:wheel_steered wheel_prefix="front_left" parent_link="base_link" wheel_origin_y="${wheel_y_offset}">
+      <origin xyz="${wheelbase/2+wheel_x_offset} ${track/2-wheel_y_offset} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
     </xacro:wheel_steered>
-    <xacro:wheel_steered wheel_prefix="front_right" parent_link="base_link">
-      <origin xyz="${wheelbase/2+wheel_x_offset} ${-track/2} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
+    <xacro:wheel_steered wheel_prefix="front_right" parent_link="base_link" wheel_origin_y="${-wheel_y_offset}">
+      <origin xyz="${wheelbase/2+wheel_x_offset} ${-track/2+wheel_y_offset} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
     </xacro:wheel_steered>
     <xacro:wheel wheel_prefix="rear_left" parent_link="base_link">
       <origin xyz="${-wheelbase/2+wheel_x_offset} ${track/2} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />

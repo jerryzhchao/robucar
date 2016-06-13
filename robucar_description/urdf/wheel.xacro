@@ -4,6 +4,7 @@
   <!--<xacro:property name="M_PI" default="3.14159"/>
   <xacro:property name="wheel_length" default="0.09" />
   <xacro:property name="wheel_radius" default="0.13" />-->
+  <xacro:property name="mass_wheel" value="5.0" />
 
   <xacro:macro name="wheel" params="wheel_prefix parent_link *joint_origin">
     <gazebo reference="${wheel_prefix}_wheel_link">
@@ -11,12 +12,15 @@
     </gazebo>
 		<link name="${wheel_prefix}_wheel_link">
 			<inertial>
-        <mass value="4.0" />
-				<origin xyz="0 0 0" />
-        <inertia  ixx="1.0" ixy="0" ixz="0"
-                  iyy="1.0" iyz="0"
-                  izz="1.0" />
-			</inertial>
+        <mass value="${mass_wheel}" />
+        <origin xyz="0 0 0" rpy="${M_PI/2}  0 0" />
+        <!--<inertia ixx="1.0" ixy="0" ixz="0"
+                 iyy="1.0" iyz="0"
+                 izz="1.0"/>-->
+        <inertia  ixx="${mass_wheel/4.0*(wheel_radius*wheel_radius+wheel_length*wheel_length/3.0)}" ixy="0" ixz="0"
+                  iyy="${mass_wheel*wheel_radius*wheel_radius/2.0}" iyz="0"
+                  izz="${mass_wheel/4.0*(wheel_radius*wheel_radius+wheel_length*wheel_length/3.0)}" />
+      </inertial>
 			<visual>
 				<origin xyz="0 0 0" rpy="${M_PI/2}  0 0" />
 				<geometry>

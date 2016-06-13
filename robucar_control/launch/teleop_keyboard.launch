@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <launch>
   <group ns="keyboard_teleop">
-    <remap from="cmd_vel" to="/robucar_velocity_controller/cmd_vel"/>
     <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard"/>
   </group>
 
