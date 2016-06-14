@@ -3,7 +3,6 @@
 
 #include "communication_p/framepure.hpp"
 
-using namespace DrRobot_MotionSensorDriver;
 using namespace robucar_communication;
 
 namespace {
@@ -31,14 +30,8 @@ namespace robucar_base {
     private_nh_.param<double>("max_speed", max_speed_, 2.0);
     private_nh_.param<double>("polling_timeout_", polling_timeout_, 10.0);
 
-    std::string port;
+    int port;
     private_nh_.param<int>("port", port, 60000);
-
-    robot_config_.commMethod = DrRobot_MotionSensorDriver::Network;
-    robot_config_.boardType = DrRobot_MotionSensorDriver::Jaguar;
-    robot_config_.portNum = 10001;
-    strncpy(robot_config_.robotIP, "172.16.51.52", sizeof(robot_config_.robotIP) - 1);
-    drrobot_motion_driver_.setDrRobotMotionDriverConfig(&robot_config_);
 
     pid_controller_left_.init(ros::NodeHandle(private_nh_, "pid_parameters"));
     pid_controller_left_.reset();
@@ -72,19 +65,19 @@ namespace robucar_base {
       // make a GET  on the service to determine number of drives
       if (!pure_client_.sendRequest(22, Pure::ACTION_GET, pure_target_))
       {
-        ROS_WARN("[Vehicle] Cannot send data request to Robufast.");
+        ROS_WARN("[Vehicle] Cannot send data request to Robucar.");
       }
       ResponsePtr response = pure_client_.findResponse(22, Pure::ACTION_GET, pure_target_);
       if (!response)
       {
-        ROS_WARN("[Vehicle] Robufast has not sent answer.");
+        ROS_WARN("[Vehicle] Robucar has not sent answer.");
       }
 
       // register, no call-back
       notifier_ = pure_client_.requestNotification (pure_target_, 10, 1);
       if (!notifier_)
       {
-        ROS_ERROR(std::string("[Vehicle] Cannot communicate with Robufast. Try to execute this command to check for network problem: ping ") + robot_ip_);
+        ROS_ERROR_STREAM(std::string("[Vehicle] Cannot communicate with Robucar. Try to execute this command to check for network problem: ping ") + robot_ip_);
       }
       //Send null command to be sure that no previous command are kept
       CommandPureDrive command;
@@ -99,8 +92,8 @@ namespace robucar_base {
   */
   void RobucarHardware::registerControlInterfaces()
   {
-    ros::V_string joint_names = boost::assign::list_of("rear_left_wheel")("rear_right_wheel")("front_left_wheel")
-                                ("front_right_wheel");
+    ros::V_string joint_names = boost::assign::list_of("front_left_wheel")("front_right_wheel")
+                                                      ("rear_left_wheel")("rear_right_wheel");
     for (unsigned int i = 0; i < joint_names.size(); i++)
     {
       hardware_interface::JointStateHandle joint_state_handle(joint_names[i],
@@ -111,11 +104,23 @@ namespace robucar_base {
           joint_state_handle, &joints_[i].velocity_command);
       velocity_joint_interface_.registerHandle(joint_handle);
     }
-    registerInterface(&joint_state_interface_);
-    registerInterface(&velocity_joint_interface_);
 
     ros::V_string steering_joint_names = boost::assign::list_of("front_left_steering_joint")("front_right_steering_joint");
     /// TODO register steering interface
+    for (unsigned int i = 0; i < steering_joint_names.size(); i++)
+    {
+      hardware_interface::JointStateHandle joint_state_handle(steering_joint_names[i],
+                                                              &steering_joints_[i].position, &steering_joints_[i].velocity, &steering_joints_[i].effort);
+      joint_state_interface_.registerHandle(joint_state_handle);
+
+      hardware_interface::JointHandle joint_handle(
+          joint_state_handle, &steering_joints_[i].position_command);
+      position_joint_interface_.registerHandle(joint_handle);
+    }
+
+    registerInterface(&joint_state_interface_);
+    registerInterface(&velocity_joint_interface_);
+    registerInterface(&position_joint_interface_);
   }
 
   /**
@@ -128,70 +133,33 @@ namespace robucar_base {
       OutboundNotificationPtr message = notifier_->pop(1000);
       if(message)
       {
-        //frame datation
-        const effibox::date_time acquisition_date = effibox::live_clock::current_time();
-        PerceptionDate perception_date(acquisition_date - latency.sensor_latency() - latency.communication_latency(),
-                                       latency.uncertainty());
-
         if(message->dataLength == 0)
         {
-          ROS_WARN("[Vehicle] Robufast answered inconsistent message... ignored.");
+          ROS_WARN("[Vehicle] Robucar answered inconsistent message... ignored.");
         }
 
-        std::vector<char> data(message->dataBuffer, message->dataBuffer + message->dataLength);
+        //std::vector<char> data(message->dataBuffer, message->dataBuffer + message->dataLength);
+        FramePureDrive frame_pure(message->dataBuffer, message->dataLength);
+        frame_pure.decode();
+        double angle_front = -frame_pure.getMotorState(FramePureDrive::FS)->getPosition();
+        double angle_rear = frame_pure.getMotorState(FramePureDrive::RS)->getPosition(); /// + pour Robucar, - pour Aroco; pour l'angle de braquage arrière
+
+//        angle_front_ -= OFFSET_STEERING_FRONT_;
+//        angle_rear_ -= OFFSET_STEERING_REAR_;
+        joints_[0].velocity = linearToAngular(frame_pure.getMotorState(FramePureDrive::FL)->getSpeed());
+        joints_[1].velocity = linearToAngular(frame_pure.getMotorState(FramePureDrive::FR)->getSpeed());
+        joints_[2].velocity = linearToAngular(frame_pure.getMotorState(FramePureDrive::RL)->getSpeed());
+        joints_[3].velocity = linearToAngular(frame_pure.getMotorState(FramePureDrive::RR)->getSpeed());
+
+        steering_joints_[0].position = angle_front;
+        steering_joints_[1].position = angle_front;
+
       }
       else
       {
-        ROS_WARN("[Vehicle] Robufast timeout.");
+        ROS_WARN("[Vehicle] Robucar timeout.");
       }
     }
-
-
-    if(drrobot_motion_driver_.portOpen())
-    {
-      drrobot_motion_driver_.readMotorSensorData(&motor_sensor_data_);
-
-      // Translate from driver data to ROS data
-      //motors used are 3 & 4
-      //3 is left motor
-      //4 is right motor
-      for (uint j = 0 ; j < 4; ++j)
-      {
-        uint i = j;
-        if(j > 1)
-          i = j+1;
-//        if( j == 3)
-//          ROS_DEBUG_STREAM(" motorSensorEncoderPos[i] "<<motor_sensor_data_.motorSensorEncoderPos[j]
-//                           <<" motorSensorEncoderVel[i] "<<motor_sensor_data_.motorSensorEncoderVel[j]
-//                           <<" motorSensorEncoderDir[i] "<<motor_sensor_data_.motorSensorEncoderDir[j]);
-        double delta = double(motor_sensor_data_.motorSensorEncoderPos[i])/double(PULSES_PER_REVOLUTION)*2.0*M_PI;
-        if(i == 1 || i == 4)
-          delta = -delta;
-        delta += - joints_[j].position_offset - joints_[j].position;
-
-        // detect suspiciously large readings, possibly from encoder rollover
-        if (std::abs(delta) < 3.0)
-        {
-          joints_[j].position += delta;
-        }
-        else
-        {
-          // suspicious! drop this measurement and update the offset for subsequent readings
-          joints_[j].position_offset += delta;
-        }
-
-        double velocity = double(motor_sensor_data_.motorSensorEncoderVel[i])/double(PULSES_PER_REVOLUTION)*2.0*M_PI;
-        if(motor_sensor_data_.motorSensorEncoderDir[i] == 0)
-          velocity = -velocity;
-
-        joints_[j].velocity = velocity ;
-        if(j == 2)
-          ROS_DEBUG_STREAM(i<<" delta "<<angularToLinear(delta)<<" m velocity "<<angularToLinear(velocity)<<" m/s");
-        if(j == 3)
-          ROS_DEBUG_STREAM(i<<" delta "<<angularToLinear(delta)<<" m velocity "<<angularToLinear(velocity)<<" m/s");
-      }
-    }
-
   }
 
   /**
@@ -199,60 +167,22 @@ namespace robucar_base {
   */
   void RobucarHardware::writeCommandsToHardware(ros::Duration& dt)
   {
-    double error_left = joints_[0].velocity_command - (joints_[0].velocity+joints_[2].velocity)/2;
-    double error_right = joints_[1].velocity_command - (joints_[1].velocity+joints_[3].velocity)/2;
+    CommandPureDrive drive(DRIVE_ENABLE);
+    drive.setSpeedFL(angularToLinear(joints_[0].velocity_command));
+    drive.setSpeedFR(angularToLinear(joints_[1].velocity_command));
+    drive.setSpeedRL(angularToLinear(joints_[2].velocity_command));
+    drive.setSpeedRR(angularToLinear(joints_[3].velocity_command));
+    const double steering_command = (steering_joints_[0].position_command + steering_joints_[1].position_command)/2.0;
+    drive.setFrontSteering(steering_command);
+    //drive.setRearSteering(); // + pour Robucar, - pour Aroco
 
-    control_toolbox::Pid::Gains new_gains_left = init_gains_;
-    control_toolbox::Pid::Gains new_gains_right = init_gains_;
-    if(fabs(joints_[0].velocity_command) < 0.1)
+    uint8_t buffer[512];
+    // Drive (4 drive motors)
+    size_t len = drive.toBuffer(buffer);
+    if(pure_client_.sendNotification(pure_target_, static_cast<uint8_t*>(buffer), len)<=0)
     {
-      new_gains_left.i_gain_ = 0;
-      pid_controller_left_.reset();
+      ROS_WARN("[Vehicle] Cannot send message to Robucar through the pure client");
     }
-    if(fabs(joints_[1].velocity_command) < 0.1)
-    {
-      new_gains_right.i_gain_ = 0;
-      pid_controller_right_.reset();
-    }
-
-    if(fabs(error_left) < 0.1)
-      new_gains_left.p_gain_ = 0;
-    if(fabs(error_right) < 0.1)
-      new_gains_right.p_gain_ = 0;
-
-    pid_controller_left_.setGains(new_gains_left);
-    pid_controller_right_.setGains(new_gains_right);
-
-    double diff_speed_left = pid_controller_left_.computeCommand(error_left, dt);
-    double diff_speed_right = pid_controller_right_.computeCommand(error_right, dt);
-    control_toolbox::Pid::Gains gain = pid_controller_left_.getGains();
-    ROS_DEBUG_STREAM("diff_speed_left_rear "<<diff_speed_left <<
-                    " joints_[0].velocity "<<joints_[0].velocity<<
-                    " joints_[0].velocity_command "<<joints_[0].velocity_command<<
-                    " error_left "<<error_left<<
-                    " i left gain "<<gain.i_gain_);
-    diff_speed_left = angularToLinear(diff_speed_left);
-    diff_speed_right = angularToLinear(diff_speed_right);
-
-    // roue décollée
-    // -1   => 3m/s
-    // -0.8 => 2.2m/s
-    // -0.5 => 1m/s
-    // -0.2 => 0.3m/s
-//    double diff_speed_left = angularToLinear(joints_[0].velocity_command);
-//    double diff_speed_right = angularToLinear(joints_[1].velocity_command);
-
-    limitDifferentialSpeed(diff_speed_left, diff_speed_right);
-
-    double linear_speed = (diff_speed_left + diff_speed_right) * 0.5;
-    double differential_speed = diff_speed_left - diff_speed_right;
-    int forwardPWM = -linear_speed * 16384 + 16384;
-    int turnPWM = differential_speed * 16384 + 16384;
-    if (forwardPWM > ENCODER_MAX) forwardPWM = ENCODER_MAX;
-    if (forwardPWM < 0) forwardPWM = 0;
-    if (turnPWM > ENCODER_MAX) turnPWM = ENCODER_MAX;
-    if (turnPWM < 0) turnPWM = 0;
-    drrobot_motion_driver_.sendMotorCtrlAllCmd(PWM,NOCONTROL,NOCONTROL,NOCONTROL,forwardPWM,turnPWM, NOCONTROL);
   }
 
   /**

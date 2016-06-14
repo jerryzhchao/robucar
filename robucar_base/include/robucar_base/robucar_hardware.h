@@ -43,10 +43,6 @@ namespace robucar_base
 
     ros::NodeHandle nh_, private_nh_;
 
-    DrRobot_MotionSensorDriver::DrRobotMotionSensorDriver drrobot_motion_driver_;
-    DrRobot_MotionSensorDriver::DrRobotMotionConfig robot_config_;
-    DrRobot_MotionSensorDriver::MotorSensorData motor_sensor_data_;
-
     // PURE
     std::string robot_ip_;
     robucar_communication::PureClient& pure_client_;
@@ -57,6 +53,7 @@ namespace robucar_base
     // ROS Control interfaces
     hardware_interface::JointStateInterface joint_state_interface_;
     hardware_interface::VelocityJointInterface velocity_joint_interface_;
+    hardware_interface::PositionJointInterface position_joint_interface_;
 
     control_toolbox::Pid pid_controller_left_, pid_controller_right_;
     control_toolbox::Pid::Gains init_gains_;
@@ -67,7 +64,7 @@ namespace robucar_base
     double polling_timeout_;
 
     /**
-    * Joint structure that is hooked to ros_control's InterfaceManager, to allow control via diff_drive_controller
+    * Joint structure that is hooked to ros_control's InterfaceManager, to allow control via ros_controllers
     */
     struct Joint
     {
@@ -79,6 +76,16 @@ namespace robucar_base
 
       Joint() : position(0), velocity(0), effort(0), velocity_command(0) { }
     } joints_[4];
+
+    struct SteeringJoint
+    {
+      double position;
+      double velocity;
+      double effort;
+      double position_command;
+
+      SteeringJoint() : position(0), velocity(0), effort(0), position_command(0) { }
+    } steering_joints_[2];
   };
 
 }  // namespace robucar_base
