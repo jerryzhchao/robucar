@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<package>
+  <name>robucar_base</name>
+  <version>0.1.0</version>
+  <description>Robosoft robucar driver</description>
+
+  <author email="vincentrou@gmail.com">Vincent Rousseau</author>
+
+  <maintainer email="vincentrou@gmail.com">Vincent Rousseau</maintainer>
+
+  <license>BSD</license>
+
+  <!--<url type="website">http://ros.org/wiki/robucar_base</url>-->
+  <url type="bugtracker">https://github.com/vincentrou/robucar_robot/issues</url>
+  <url type="repository">https://github.com/vincentrou/robucar_robot</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>controller_manager</build_depend>
+  <build_depend>hardware_interface</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>roslaunch</build_depend>
+  <build_depend>roslint</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>control_toolbox</build_depend>
+
+  <run_depend>controller_manager</run_depend>
+  <run_depend>diff_drive_controller</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>hardware_interface</run_depend>
+  <run_depend>robucar_control</run_depend>
+  <run_depend>robucar_description</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>topic_tools</run_depend>
+  <run_depend>control_toolbox</run_depend>
+
+  <export></export>
+</package>
