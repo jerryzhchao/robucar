@@ -14,6 +14,9 @@ catkin_package(
 
 include_directories(include ${Boost_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
 
+#Disable debug
+add_definitions(-DNDEBUG)
+
 add_library(pure_client
   src/communication_p/pure_client.cpp
   src/communication_p/pure_devices.cpp
@@ -24,6 +27,7 @@ add_executable(robucar_node
   src/robucar_base.cpp
   src/robucar_hardware.cpp)
 target_link_libraries(robucar_node ${catkin_LIBRARIES} ${Boost_LIBRARIES} pure_client)
+
 
 #roslaunch_add_file_check(launch)
 
@@ -40,4 +44,12 @@ target_link_libraries(robucar_node ${catkin_LIBRARIES} ${Boost_LIBRARIES} pure_c
 
 #Add custom (non compiling) targets so launch scripts and python files show up in QT Creator's project view.
 #file(GLOB_RECURSE EXTRA_FILES */*)
-#add_custom_target(${PROJECT_NAME}_OTHER_FILES ALL WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} SOURCES ${EXTRA_FILES})
+#add_custom_target(${PROJECT_NAME}_OTHER_FILES SOURCES ${EXTRA_FILES})
+FILE(GLOB children ${CMAKE_SOURCE_DIR}/*)
+FOREACH(child ${children})
+  IF(IS_DIRECTORY ${child})
+    file(GLOB_RECURSE dir_files "${child}/*")
+    LIST(APPEND extra_files ${dir_files})
+  ENDIF()
+ENDFOREACH()
+add_custom_target(dummy_${PROJECT_NAME} SOURCES ${extra_files})

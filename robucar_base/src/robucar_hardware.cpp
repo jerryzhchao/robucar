@@ -33,12 +33,6 @@ namespace robucar_base {
     int port;
     private_nh_.param<int>("port", port, 60000);
 
-    pid_controller_left_.init(ros::NodeHandle(private_nh_, "pid_parameters"));
-    pid_controller_left_.reset();
-    pid_controller_right_.init(ros::NodeHandle(private_nh_, "pid_parameters"));
-    pid_controller_right_.reset();
-
-    init_gains_ = pid_controller_left_.getGains();
     resetTravelOffset();
     registerControlInterfaces();
 
