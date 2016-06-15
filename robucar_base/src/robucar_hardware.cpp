@@ -166,7 +166,7 @@ namespace robucar_base {
     drive.setSpeedFR(angularToLinear(joints_[1].velocity_command));
     drive.setSpeedRL(angularToLinear(joints_[2].velocity_command));
     drive.setSpeedRR(angularToLinear(joints_[3].velocity_command));
-    const double steering_command = (steering_joints_[0].position_command + steering_joints_[1].position_command)/2.0;
+    const double steering_command = -(steering_joints_[0].position_command + steering_joints_[1].position_command)/2.0;
     drive.setFrontSteering(steering_command);
     //drive.setRearSteering(); // + pour Robucar, - pour Aroco
 
