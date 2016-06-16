@@ -40,6 +40,7 @@
 
   <!--Teleop -->
   <remap from="/joy_teleop/cmd_vel" to="/robucar_velocity_controller/cmd_vel"/>
+  <remap from="/joy_teleop/cmd_ackermann" to="/robucar_velocity_controller/cmd_ackermann"/>
   <include file="$(find robucar_control)/launch/teleop.launch" />
   <!--<include file="$(find robucar_control)/launch/teleop_keyboard.launch" />-->
 </launch>
