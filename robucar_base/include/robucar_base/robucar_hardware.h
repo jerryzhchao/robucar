@@ -83,7 +83,7 @@ namespace robucar_base
       SteeringJoint() : position(0), velocity(0), effort(0), position_command(0) { }
     } steering_joints_[2];
 
-    std::fstream debug_guidance_, debug_cmd_;
+    std::fstream debug_guidance_;
   };
 
 }  // namespace robucar_base

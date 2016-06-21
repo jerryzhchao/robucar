@@ -35,7 +35,7 @@ namespace robucar_base {
 
     resetTravelOffset();
     registerControlInterfaces();
-
+#ifndef NDEBUG
     debug_guidance_.open(string("robufast.dat").c_str(), fstream::in|fstream::out|fstream::trunc);
     if(debug_guidance_.is_open())
     {
@@ -54,18 +54,7 @@ namespace robucar_base {
                       <<" RS_cmd, "
                       <<"\n";
     }
-    debug_cmd_.open(string("robufast_cmd.dat").c_str(), fstream::in|fstream::out|fstream::trunc);
-    if(debug_cmd_.is_open())
-    {
-      debug_cmd_ <<" time, "
-                      <<" FL_cmd, "
-                      <<" FR_cmd, "
-                      <<" RL_cmd, "
-                      <<" RR_cmd, "
-                      <<" FS_cmd, "
-                      <<" RS_cmd, "
-                      <<"\n";
-    }
+#endif
   }
 
   RobucarHardware::~RobucarHardware()
@@ -176,7 +165,7 @@ namespace robucar_base {
 
         steering_joints_[0].position = angle_front;
         steering_joints_[1].position = angle_front;
-
+#ifndef NDEBUG
         if(debug_guidance_.is_open())
         {
           debug_guidance_ << std::setprecision(10)
@@ -195,6 +184,7 @@ namespace robucar_base {
                           <<" "<<frame_pure.getMotorState(FramePureDrive::RS)->getCommandValue()
                           <<"\n";
         }
+#endif
       }
       else
       {
@@ -216,19 +206,6 @@ namespace robucar_base {
     const double steering_command = -(steering_joints_[0].position_command + steering_joints_[1].position_command)/2.0;
     drive.setFrontSteering(steering_command);
     //drive.setRearSteering(); // + pour Robucar, - pour Aroco
-
-    if(debug_cmd_.is_open())
-    {
-      debug_cmd_ << std::setprecision(10)
-                 <<" "<<ros::Time::now().toSec()
-                      <<" "<< drive.speedFL_
-                      <<" "<< drive.speedFR_
-                      <<" "<< drive.speedRL_
-                      <<" "<< drive.speedRR_
-                      <<" "<< drive.frontSteering_
-                      <<" "<< drive.rearSteering_
-                      <<"\n";;
-    }
 
     uint8_t buffer[512];
     // Drive (4 drive motors)
