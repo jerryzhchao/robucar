@@ -25,7 +25,7 @@ namespace robucar_base {
         notifier_(0),
         pure_target_(2)
   {
-    private_nh_.param<double>("wheel_diameter", wheel_diameter_, 0.27); // or 0.3555?
+    private_nh_.param<double>("wheel_diameter", wheel_diameter_, 0.56); // or 0.3555?
     private_nh_.param<double>("max_accel", max_accel_, 5.0);
     private_nh_.param<double>("max_speed", max_speed_, 2.0);
     private_nh_.param<double>("polling_timeout_", polling_timeout_, 10.0);
@@ -36,6 +36,36 @@ namespace robucar_base {
     resetTravelOffset();
     registerControlInterfaces();
 
+    debug_guidance_.open(string("robufast.dat").c_str(), fstream::in|fstream::out|fstream::trunc);
+    if(debug_guidance_.is_open())
+    {
+      debug_guidance_ <<" time, "
+                      <<" FL, "
+                      <<" FR, "
+                      <<" RL, "
+                      <<" RR, "
+                      <<" FS, "
+                      <<" RS, "
+                      <<" FL_cmd, "
+                      <<" FR_cmd, "
+                      <<" RL_cmd, "
+                      <<" RR_cmd, "
+                      <<" FS_cmd, "
+                      <<" RS_cmd, "
+                      <<"\n";
+    }
+    debug_cmd_.open(string("robufast_cmd.dat").c_str(), fstream::in|fstream::out|fstream::trunc);
+    if(debug_cmd_.is_open())
+    {
+      debug_cmd_ <<" time, "
+                      <<" FL_cmd, "
+                      <<" FR_cmd, "
+                      <<" RL_cmd, "
+                      <<" RR_cmd, "
+                      <<" FS_cmd, "
+                      <<" RS_cmd, "
+                      <<"\n";
+    }
   }
 
   RobucarHardware::~RobucarHardware()
@@ -100,7 +130,6 @@ namespace robucar_base {
     }
 
     ros::V_string steering_joint_names = boost::assign::list_of("front_left_steering_joint")("front_right_steering_joint");
-    /// TODO register steering interface
     for (unsigned int i = 0; i < steering_joint_names.size(); i++)
     {
       hardware_interface::JointStateHandle joint_state_handle(steering_joint_names[i],
@@ -148,6 +177,24 @@ namespace robucar_base {
         steering_joints_[0].position = angle_front;
         steering_joints_[1].position = angle_front;
 
+        if(debug_guidance_.is_open())
+        {
+          debug_guidance_ << std::setprecision(10)
+                          <<" "<<ros::Time::now().toSec()
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::FL)->getSpeed()
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::FR)->getSpeed()
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::RL)->getSpeed()
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::RR)->getSpeed()
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::FS)->getPosition()
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::RS)->getPosition()  
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::FL)->getCommandValue()
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::FR)->getCommandValue()
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::RL)->getCommandValue()
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::RR)->getCommandValue()
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::FS)->getCommandValue()
+                          <<" "<<frame_pure.getMotorState(FramePureDrive::RS)->getCommandValue()
+                          <<"\n";
+        }
       }
       else
       {
@@ -169,6 +216,19 @@ namespace robucar_base {
     const double steering_command = -(steering_joints_[0].position_command + steering_joints_[1].position_command)/2.0;
     drive.setFrontSteering(steering_command);
     //drive.setRearSteering(); // + pour Robucar, - pour Aroco
+
+    if(debug_cmd_.is_open())
+    {
+      debug_cmd_ << std::setprecision(10)
+                 <<" "<<ros::Time::now().toSec()
+                      <<" "<< drive.speedFL_
+                      <<" "<< drive.speedFR_
+                      <<" "<< drive.speedRL_
+                      <<" "<< drive.speedRR_
+                      <<" "<< drive.frontSteering_
+                      <<" "<< drive.rearSteering_
+                      <<"\n";;
+    }
 
     uint8_t buffer[512];
     // Drive (4 drive motors)

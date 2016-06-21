@@ -1,15 +1,14 @@
-#ifndef HUSKY_BASE_HUSKY_HARDWARE_H
-#define HUSKY_BASE_HUSKY_HARDWARE_H
+#ifndef ROBUCAR_BASE_ROBUCAR_HARDWARE_H
+#define ROBUCAR_BASE_ROBUCAR_HARDWARE_H
 
 #include "hardware_interface/joint_state_interface.h"
 #include "hardware_interface/joint_command_interface.h"
 #include "hardware_interface/robot_hw.h"
-#include <control_toolbox/pid.h>
 #include "ros/ros.h"
 #include "sensor_msgs/JointState.h"
 #include <string>
+#include <fstream>
 
-#include "DrRobotMotionSensorDriver.hpp"
 #include "robucar_communication/pure_client.h"
 
 namespace robucar_base
@@ -55,9 +54,6 @@ namespace robucar_base
     hardware_interface::VelocityJointInterface velocity_joint_interface_;
     hardware_interface::PositionJointInterface position_joint_interface_;
 
-    control_toolbox::Pid pid_controller_left_, pid_controller_right_;
-    control_toolbox::Pid::Gains init_gains_;
-
     // ROS Parameters
     double wheel_diameter_, max_accel_, max_speed_;
 
@@ -86,7 +82,9 @@ namespace robucar_base
 
       SteeringJoint() : position(0), velocity(0), effort(0), position_command(0) { }
     } steering_joints_[2];
+
+    std::fstream debug_guidance_, debug_cmd_;
   };
 
 }  // namespace robucar_base
-#endif  // HUSKY_BASE_HUSKY_HARDWARE_H
+#endif  // ROBUCAR_BASE_ROBUCAR_HARDWARE_H

@@ -43,7 +43,7 @@ public:
   void setFrontSteering(const float frontSteering);
   void setRearSteering(const float rearSteering);
   void setDriveStatus(const uint8_t drive_status);
-private:
+public:
   float speedFR_, speedFL_, speedRR_, speedRL_, frontSteering_, rearSteering_;
   uint8_t enable;
 };

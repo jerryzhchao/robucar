@@ -192,8 +192,12 @@ public:
     currentTorque(currentTorque)
     {}
     size_t toBuffer (uint8_t* buf);
+    uint8_t getMode() { return mode;}
+    uint8_t getStatus() { return status;}
+    float getCommandValue() { return currentCommandValue;}
     float getPosition () {return currentPosition;}
     float getSpeed () {return currentSpeed;}
+    float getTorque() { return currentTorque;}
 };
 
 // sent by client to command motor
