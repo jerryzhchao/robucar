@@ -9,7 +9,7 @@
   </include>
 
   <!-- Robucar harware driver -->
-  <node pkg="robucar_base" type="robucar_node" name="robucar_node" output="screen">
+  <node pkg="robucar_base" type="robucar_node" name="robucar_node" output="screen"> <!--launch-prefix="valgrind -\-tool=callgrind -\-instr-atstart=no">-->
     <rosparam subst_value="true">
       control_frequency: 10.0
     </rosparam>
