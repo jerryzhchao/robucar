@@ -28,7 +28,7 @@ class TeleopAckermannJoy():
     def callback(self, data):
         #rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.buttons)
         self.linear_speed = data.axes[1]        #left up-down stick
-        self.front_steering = data.axes[3]*pi/6      #right left-right stick
+        self.front_steering = data.axes[3]*pi/10      #right left-right stick
 
 
 if __name__ == '__main__':
