@@ -207,6 +207,14 @@ namespace robucar_base {
     drive.setFrontSteering(steering_command);
     //drive.setRearSteering(); // + pour Robucar, - pour Aroco
 
+    float measured_speed = (joints_[0].velocity+joints_[1].velocity+joints_[2].velocity+joints_[3].velocity)/4.0 *wheel_diameter_/2.0;
+    float cmd_speed = (joints_[0].velocity_command+joints_[1].velocity_command+joints_[2].velocity_command+joints_[3].velocity_command)/4.0 *wheel_diameter_/2.0;
+    float measured_steering = (steering_joints_[0].position + steering_joints_[1].position)/2.0;
+    if(fabs(measured_speed) < 0.1 && fabs(cmd_speed) < 0.03
+       && fabs(measured_steering) < 0.03  && fabs(steering_command) < 0.03)
+    {
+      drive.setDriveStatus(DRIVE_DISABLE);
+    }
     uint8_t buffer[512];
     // Drive (4 drive motors)
     size_t len = drive.toBuffer(buffer);
