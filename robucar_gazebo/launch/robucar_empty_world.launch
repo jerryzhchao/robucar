@@ -5,6 +5,7 @@
 
   <arg name="laser_enabled" default="false"/>
   <arg name="camera_enabled" default="false"/>
+  <arg name="velodyne_enabled" default="true"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(arg world_name)"/> <!-- world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
@@ -18,6 +19,7 @@
   <include file="$(find robucar_gazebo)/launch/spawn_robucar.launch">
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="camera_enabled" value="$(arg camera_enabled)"/>
+    <arg name="velodyne_enabled" value="$(arg velodyne_enabled)"/>
   </include>
 
 </launch>
