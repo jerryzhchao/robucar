@@ -1,0 +1,6 @@
+<launch>
+  <!-- sudo route add 192.168.18.54 eth0 -->
+  <group ns="velodyne">
+    <include file="$(find velodyne_pointcloud)/launch/32e_points.launch" />
+  </group>
+</launch>
