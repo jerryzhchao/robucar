@@ -81,6 +81,38 @@
         <update_rate>10.0</update_rate>
       </sensor>
     </gazebo>-->
+
+    <!--<gazebo reference="velodyne">
+        <sensor type="ray" name="velodyne_sensor">
+          <pose>0.0 0.0 0.0 0.0 0 0</pose>
+          <visualize>false</visualize>
+          <update_rate>5</update_rate>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>720</samples>
+                <min_angle>-3.13</min_angle>
+                <max_angle>3.14</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>16</samples>
+                <min_angle>-0.13</min_angle>
+                <max_angle>0.13</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>0.30</min>
+              <max>30.0</max>
+            </range>
+          </ray>
+          <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_block_laser.so">
+            <topicName>scan_velodyne</topicName>
+            <updateRate>5</updateRate>
+            <frameName>/velodyne</frameName>
+            <alwaysOn>true</alwaysOn>
+          </plugin>
+        </sensor>
+    </gazebo>-->
   </xacro:macro>
 
 </robot>

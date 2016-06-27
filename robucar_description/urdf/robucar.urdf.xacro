@@ -137,5 +137,13 @@
         <child link="navsat_link" />
       </joint>
     </xacro:if>
+
+
+    <!--<link name="velodyne"/>
+    <joint name="velodyne_joint" type="fixed">
+      <origin xyz="0.0 0.0 1.0" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="velodyne" />
+    </joint>-->
   </xacro:macro>
 </robot>

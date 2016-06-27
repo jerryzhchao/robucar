@@ -20,9 +20,6 @@ robucar_velocity_controller:
   # no need to publish a TF based on encoders alone.
   enable_odom_tf: false
 
-  # Robucar hardware provides wheel velocities
-  estimate_velocity_from_position: true
-
   wheel_separation: 1.23
   wheel_base: 1.22
   # Wheel separation and radius multipliers
