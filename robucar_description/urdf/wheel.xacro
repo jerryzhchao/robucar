@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro" name="wheel">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="wheel">
 
   <!--<xacro:property name="M_PI" default="3.14159"/>
   <xacro:property name="wheel_length" default="0.09" />
