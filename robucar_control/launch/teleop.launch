@@ -12,7 +12,7 @@
     </node>
 
     <node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
-    <node pkg="robucar_control" type="teleop_ackermann_joy.py" name="teleop_ackermann_joy"/>
+    <node pkg="ackermann_controller" type="teleop_ackermann_joy.py" name="teleop_ackermann_joy"/>
   </group>
 
 </launch>
