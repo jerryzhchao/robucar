@@ -4,9 +4,9 @@
   <version>0.1.0</version>
   <description>Robosoft robucar driver</description>
 
-  <author email="vincentrou@gmail.com">Vincent Rousseau</author>
+  <author email="vincent.rousseau@irstea.fr">Vincent Rousseau</author>
 
-  <maintainer email="vincentrou@gmail.com">Vincent Rousseau</maintainer>
+  <maintainer email="vincent.rousseau@irstea.fr">Vincent Rousseau</maintainer>
 
   <license>BSD</license>
 
