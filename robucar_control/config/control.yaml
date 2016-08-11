@@ -21,6 +21,7 @@ robucar_velocity_controller:
   enable_odom_tf: false
 
   wheel_separation: 1.23
+  wheel_radius: 0.28
   wheel_base: 1.22
   # Wheel separation and radius multipliers
   wheel_separation_multiplier: 1.0 # default: 1.0
