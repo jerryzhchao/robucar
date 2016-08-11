@@ -25,10 +25,13 @@ namespace robucar_base {
         notifier_(0),
         pure_target_(2)
   {
-    private_nh_.param<double>("wheel_diameter", wheel_diameter_, 0.56); // or 0.3555?
-    private_nh_.param<double>("max_accel", max_accel_, 5.0);
-    private_nh_.param<double>("max_speed", max_speed_, 2.0);
-    private_nh_.param<double>("polling_timeout_", polling_timeout_, 10.0);
+    double wheel_radius = 0.56;
+    if(!nh_.getParam("robucar_velocity_controller/wheel_radius", wheel_radius))
+    {
+      ROS_ERROR("The robucar_velocity_controller/wheel_radius parameters must be loaded");
+    }
+    wheel_diameter_ = 2*wheel_radius;
+    ROS_INFO_STREAM("Robucar hw config wheel_diameter_ : "<<wheel_diameter_);
 
     int port;
     private_nh_.param<int>("port", port, 60000);

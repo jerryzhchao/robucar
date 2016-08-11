@@ -55,9 +55,7 @@ namespace robucar_base
     hardware_interface::PositionJointInterface position_joint_interface_;
 
     // ROS Parameters
-    double wheel_diameter_, max_accel_, max_speed_;
-
-    double polling_timeout_;
+    double wheel_diameter_;
 
     /**
     * Joint structure that is hooked to ros_control's InterfaceManager, to allow control via ros_controllers
