@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="model" default="$(find robucar_description)/urdf/description.xacro"/>
+  <arg name="model" default="$(find robucar_description)/urdf/description_4ws.xacro"/>
   <arg name="gui" default="true" />
   <arg name="rvizconfig" default="$(find robucar_description)/rviz/urdf.rviz" />
 
