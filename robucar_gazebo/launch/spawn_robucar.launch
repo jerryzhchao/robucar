@@ -4,7 +4,7 @@
   <arg name="laser_enabled" default="false"/>
   <arg name="camera_enabled" default="false"/>
 
-  <arg name="model" default="$(find robucar_gazebo)/urdf/description.gazebo.xacro"/>
+  <arg name="model" default="$(find robucar_gazebo)/urdf/description_4ws.gazebo.xacro"/>
 
   <param name="navsat/fix/status/STATUS_GBAS_FIX" type="bool" value="true"/>
   <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)

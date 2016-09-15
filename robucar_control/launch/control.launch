@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <launch>
 
-  <rosparam command="load" file="$(find robucar_control)/config/control.yaml" />
-  <node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="robucar_joint_publisher robucar_velocity_controller --shutdown-timeout 3"/>
-
-  <!--<rosparam command="load" file="$(find robucar_control)/config/control_diff.yaml" />
-  <node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="jaguar4x4wheel_joint_publisher jaguar4x4wheel_velocity_controller joint_left_controller -\-shutdown-timeout 3"/>-->
+  <arg name="config" default="$(find robucar_control)/config/control_4ws.yaml" />
+  <rosparam command="load" file="$(arg config)" />
+  <node name="base_controller_spawner" pkg="controller_manager" type="spawner"
+        args="robucar_joint_publisher robucar_velocity_controller --shutdown-timeout 3"/>
 
   <!--<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
     <rosparam command="load" file="$(find robucar_control)/config/localization.yaml" />
@@ -41,6 +40,7 @@
   <!--Teleop -->
   <remap from="/joy_teleop/cmd_vel" to="/robucar_velocity_controller/cmd_vel"/>
   <remap from="/joy_teleop/cmd_ackermann" to="/robucar_velocity_controller/cmd_ackermann"/>
+  <remap from="/joy_teleop/cmd_four_wheel_steering" to="/robucar_velocity_controller/cmd_four_wheel_steering"/>
   <include file="$(find robucar_control)/launch/teleop.launch" />
   <!--<include file="$(find robucar_control)/launch/teleop_keyboard.launch" />-->
 </launch>

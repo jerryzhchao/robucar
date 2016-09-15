@@ -13,6 +13,7 @@
 
     <node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
     <node pkg="ackermann_controller" type="teleop_ackermann_joy.py" name="teleop_ackermann_joy"/>
+    <node pkg="four_wheel_steering_controller" type="teleop_four_wheel_steering_joy.py" name="teleop_four_wheel_steering_joy"/>
   </group>
 
 </launch>
