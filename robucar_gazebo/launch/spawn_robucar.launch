@@ -4,10 +4,10 @@
   <arg name="laser_enabled" default="false"/>
   <arg name="camera_enabled" default="false"/>
 
-  <arg name="model" default="$(find robucar_gazebo)/urdf/description_4ws.gazebo.xacro"/>
+  <arg name="model" default=""/>
 
   <param name="navsat/fix/status/STATUS_GBAS_FIX" type="bool" value="true"/>
-  <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robucar_gazebo)/urdf/description$(arg model).gazebo.xacro
     laser_enabled:=$(arg laser_enabled)
     camera_enabled:=$(arg camera_enabled)
     " />
@@ -17,5 +17,9 @@
   <!-- Spawn robot in gazebo -->
   <node name="spawn_robucar_model" pkg="gazebo_ros" type="spawn_model"
     args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -z 0.5 -param robot_description -model mobile_base"/>
+
+  <include file="$(find robucar_control)/launch/control.launch">
+    <arg name="model" value="$(arg model)"/>
+  </include>
 
 </launch>
