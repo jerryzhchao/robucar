@@ -1,10 +1,10 @@
 <launch>
 
-  <arg name="model" default="$(find robucar_description)/urdf/description.xacro"/>
+  <arg name="model" default=""/>
   <arg name="laser_enabled" default="true" />
   <arg name="camera_enabled" default="false" />
 
-  <param name="robot_description" command="$(find xacro)/xacro.py --inorder $(arg model)
+  <param name="robot_description" command="$(find xacro)/xacro.py --inorder $(find robucar_description)/urdf/description$(arg model).xacro
     laser_enabled:=$(arg laser_enabled)
     camera_enabled:=$(arg camera_enabled)" />
 

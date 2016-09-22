@@ -25,7 +25,13 @@ namespace robucar_base {
         notifier_(0),
         pure_target_(2)
   {
-    double wheel_radius = 0.56;
+    double wheel_radius = 0.28;
+    ros::Rate r(1);
+    while(ros::ok() && !nh_.hasParam("robucar_velocity_controller/wheel_radius"))
+    {
+      ROS_ERROR("The robucar_velocity_controller/wheel_radius parameters is not loaded, will retry every second");
+      r.sleep();
+    }
     if(!nh_.getParam("robucar_velocity_controller/wheel_radius", wheel_radius))
     {
       ROS_ERROR("The robucar_velocity_controller/wheel_radius parameters must be loaded");
