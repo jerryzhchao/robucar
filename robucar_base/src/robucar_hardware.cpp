@@ -23,21 +23,20 @@ namespace robucar_base {
         robot_ip_("192.168.1.2"),
         pure_client_(PureClient::getInstance(robot_ip_,60000)),
         notifier_(0),
-        pure_target_(2)
+        pure_target_(2),
+        wheel_radius_(0.28)
   {
-    double wheel_radius = 0.28;
     ros::Rate r(1);
     while(ros::ok() && !nh_.hasParam("robucar_velocity_controller/wheel_radius"))
     {
       ROS_ERROR("The robucar_velocity_controller/wheel_radius parameters is not loaded, will retry every second");
       r.sleep();
     }
-    if(!nh_.getParam("robucar_velocity_controller/wheel_radius", wheel_radius))
+    if(!nh_.getParam("robucar_velocity_controller/wheel_radius", wheel_radius_))
     {
       ROS_ERROR("The robucar_velocity_controller/wheel_radius parameters must be loaded");
     }
-    wheel_diameter_ = 2*wheel_radius;
-    ROS_INFO_STREAM("Robucar hw config wheel_diameter_ : "<<wheel_diameter_);
+    ROS_INFO_STREAM("Robucar hw config wheel_radius_ : "<<wheel_radius_);
 
     int port;
     private_nh_.param<int>("port", port, 60000);
@@ -216,8 +215,8 @@ namespace robucar_base {
     drive.setFrontSteering(steering_command);
     //drive.setRearSteering(); // + pour Robucar, - pour Aroco
 
-    float measured_speed = (joints_[0].velocity+joints_[1].velocity+joints_[2].velocity+joints_[3].velocity)/4.0 *wheel_diameter_/2.0;
-    float cmd_speed = (joints_[0].velocity_command+joints_[1].velocity_command+joints_[2].velocity_command+joints_[3].velocity_command)/4.0 *wheel_diameter_/2.0;
+    float measured_speed = (joints_[0].velocity+joints_[1].velocity+joints_[2].velocity+joints_[3].velocity)/4.0 *wheel_radius_;
+    float cmd_speed = (joints_[0].velocity_command+joints_[1].velocity_command+joints_[2].velocity_command+joints_[3].velocity_command)/4.0 *wheel_radius_;
     float measured_steering = (steering_joints_[0].position + steering_joints_[1].position)/2.0;
     if(fabs(measured_speed) < 0.1 && fabs(cmd_speed) < 0.03
        && fabs(measured_steering) < 0.03  && fabs(steering_command) < 0.03)
@@ -234,25 +233,11 @@ namespace robucar_base {
   }
 
   /**
-  * Scale left and right speed outputs to maintain ros_control's desired trajectory without saturating the outputs
-  */
-  void RobucarHardware::limitDifferentialSpeed(double &diff_speed_left, double &diff_speed_right)
-  {
-    double large_speed = std::max(std::abs(diff_speed_left), std::abs(diff_speed_right));
-    float max_speed = 3.0;
-    if (large_speed > max_speed)
-    {
-      diff_speed_left *= max_speed / large_speed;
-      diff_speed_right *= max_speed / large_speed;
-    }
-  }
-
-  /**
   * Robucar reports travel in metres, need radians for ros_control RobotHW
   */
   double RobucarHardware::linearToAngular(const double &travel) const
   {
-    return travel / wheel_diameter_ * 2;
+    return travel / wheel_radius_;
   }
 
   /**
@@ -260,7 +245,7 @@ namespace robucar_base {
   */
   double RobucarHardware::angularToLinear(const double &angle) const
   {
-    return angle * wheel_diameter_ / 2;
+    return angle * wheel_radius_;
   }
 
 

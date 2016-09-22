@@ -38,8 +38,6 @@ namespace robucar_base
 
     double angularToLinear(const double &angle) const;
 
-    void limitDifferentialSpeed(double &travel_speed_left, double &travel_speed_right);
-
     ros::NodeHandle nh_, private_nh_;
 
     // PURE
@@ -55,7 +53,7 @@ namespace robucar_base
     hardware_interface::PositionJointInterface position_joint_interface_;
 
     // ROS Parameters
-    double wheel_diameter_;
+    double wheel_radius_;
 
     /**
     * Joint structure that is hooked to ros_control's InterfaceManager, to allow control via ros_controllers
