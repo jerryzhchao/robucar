@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="laser_enabled" default="true"/>
+  <arg name="camera_enabled" default="false"/>
+
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find robucar_gazebo)/launch/robucar_empty_world.launch">
+    <arg name="world_name" value="$(find romea_gazebo_worlds)/worlds/orchard_v1_4.world"/>
+    <arg name="robot_initial_pose" value="-x -5 "/>
+    <arg name="laser_enabled" value="$(arg laser_enabled)"/>
+    <arg name="camera_enabled" value="$(arg camera_enabled)"/>
+  </include>
+
+</launch>

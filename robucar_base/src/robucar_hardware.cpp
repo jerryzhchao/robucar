@@ -26,12 +26,7 @@ namespace robucar_base {
         pure_target_(2),
         wheel_radius_(0.28)
   {
-    ros::Rate r(1);
-    while(ros::ok() && !nh_.hasParam("robucar_velocity_controller/wheel_radius"))
-    {
-      ROS_ERROR("The robucar_velocity_controller/wheel_radius parameters is not loaded, will retry every second");
-      r.sleep();
-    }
+    /// TODO replace it by dynamic reconfigure param
     if(!nh_.getParam("robucar_velocity_controller/wheel_radius", wheel_radius_))
     {
       ROS_ERROR("The robucar_velocity_controller/wheel_radius parameters must be loaded");
@@ -126,7 +121,10 @@ namespace robucar_base {
       velocity_joint_interface_.registerHandle(joint_handle);
     }
 
-    ros::V_string steering_joint_names = boost::assign::list_of("front_left_steering_joint")("front_right_steering_joint");
+    ros::V_string steering_joint_names = boost::assign::list_of("front_left_steering_joint")("front_right_steering_joint")
+                                                               ("rear_left_steering_joint")("rear_right_steering_joint");
+    //ros::NodeHandle controller_nh("robucar_velocity_controller");
+
     for (unsigned int i = 0; i < steering_joint_names.size(); i++)
     {
       hardware_interface::JointStateHandle joint_state_handle(steering_joint_names[i],
@@ -173,6 +171,8 @@ namespace robucar_base {
 
         steering_joints_[0].position = angle_front;
         steering_joints_[1].position = angle_front;
+        steering_joints_[2].position = angle_rear;
+        steering_joints_[3].position = angle_rear;
 #ifndef NDEBUG
         if(debug_guidance_.is_open())
         {
@@ -211,15 +211,19 @@ namespace robucar_base {
     drive.setSpeedFR(angularToLinear(joints_[1].velocity_command));
     drive.setSpeedRL(angularToLinear(joints_[2].velocity_command));
     drive.setSpeedRR(angularToLinear(joints_[3].velocity_command));
-    const double steering_command = -(steering_joints_[0].position_command + steering_joints_[1].position_command)/2.0;
-    drive.setFrontSteering(steering_command);
+    const double front_steering_command = -(steering_joints_[0].position_command + steering_joints_[1].position_command)/2.0;
+    const double rear_steering_command = (steering_joints_[2].position_command + steering_joints_[3].position_command)/2.0;
+    drive.setFrontSteering(front_steering_command);
+    drive.setRearSteering(rear_steering_command);
     //drive.setRearSteering(); // + pour Robucar, - pour Aroco
 
     float measured_speed = (joints_[0].velocity+joints_[1].velocity+joints_[2].velocity+joints_[3].velocity)/4.0 *wheel_radius_;
     float cmd_speed = (joints_[0].velocity_command+joints_[1].velocity_command+joints_[2].velocity_command+joints_[3].velocity_command)/4.0 *wheel_radius_;
-    float measured_steering = (steering_joints_[0].position + steering_joints_[1].position)/2.0;
+    float front_measured_steering = (steering_joints_[0].position + steering_joints_[1].position)/2.0;
+    float rear_measured_steering = (steering_joints_[2].position + steering_joints_[3].position)/2.0;
     if(fabs(measured_speed) < 0.1 && fabs(cmd_speed) < 0.03
-       && fabs(measured_steering) < 0.03  && fabs(steering_command) < 0.03)
+       && fabs(front_measured_steering) < 0.03  && fabs(front_steering_command) < 0.03
+       && fabs(rear_measured_steering) < 0.03  && fabs(rear_steering_command) < 0.03)
     {
       drive.setDriveStatus(DRIVE_DISABLE);
     }

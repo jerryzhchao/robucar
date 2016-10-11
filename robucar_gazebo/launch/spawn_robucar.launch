@@ -3,6 +3,7 @@
 
   <arg name="laser_enabled" default="false"/>
   <arg name="camera_enabled" default="false"/>
+  <arg name="robot_initial_pose" default="-y 0 -Y 0"/>
 
   <arg name="model" default=""/>
 
@@ -16,7 +17,7 @@
 
   <!-- Spawn robot in gazebo -->
   <node name="spawn_robucar_model" pkg="gazebo_ros" type="spawn_model"
-    args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -z 0.5 -param robot_description -model mobile_base"/>
+    args="$(arg robot_initial_pose) -unpause -urdf -z 0.5 -param robot_description -model mobile_base"/>
 
   <include file="$(find robucar_control)/launch/control.launch">
     <arg name="model" value="$(arg model)"/>
