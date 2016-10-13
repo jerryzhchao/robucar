@@ -20,6 +20,8 @@ robucar_velocity_controller:
   # no need to publish a TF based on encoders alone.
   enable_odom_tf: false
 
+  enable_twist_cmd: true
+
   # Velocity and acceleration limits
   # Whenever a min_* is unspecified, default to -max_*
   linear:

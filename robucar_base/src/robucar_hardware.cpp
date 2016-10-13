@@ -26,18 +26,18 @@ namespace robucar_base {
         pure_target_(2),
         wheel_radius_(0.28)
   {
+    int port;
+    private_nh_.param<int>("port", port, 60000);
+
+    resetTravelOffset();
+    registerControlInterfaces();
+
     /// TODO replace it by dynamic reconfigure param
     if(!nh_.getParam("robucar_velocity_controller/wheel_radius", wheel_radius_))
     {
       ROS_ERROR("The robucar_velocity_controller/wheel_radius parameters must be loaded");
     }
     ROS_INFO_STREAM("Robucar hw config wheel_radius_ : "<<wheel_radius_);
-
-    int port;
-    private_nh_.param<int>("port", port, 60000);
-
-    resetTravelOffset();
-    registerControlInterfaces();
 #ifndef NDEBUG
     debug_guidance_.open(string("robufast.dat").c_str(), fstream::in|fstream::out|fstream::trunc);
     if(debug_guidance_.is_open())
