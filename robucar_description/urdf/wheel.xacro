@@ -6,7 +6,7 @@
   <xacro:property name="wheel_radius" default="0.13" />-->
   <xacro:property name="mass_wheel" value="5.0" />
 
-  <xacro:macro name="wheel" params="wheel_prefix parent_link *joint_origin">
+  <xacro:macro name="wheel" params="wheel_prefix parent_link left_right *joint_origin">
     <gazebo reference="${wheel_prefix}_wheel_link">
       <material>Gazebo/Black</material>
     </gazebo>
@@ -22,9 +22,10 @@
                   izz="${mass_wheel/4.0*(wheel_radius*wheel_radius+wheel_length*wheel_length/3.0)}" />
       </inertial>
 			<visual>
-				<origin xyz="0 0 0" rpy="${M_PI/2}  0 0" />
+        <origin xyz="0 0 0" rpy="${left_right * M_PI/2}  0 0" />
 				<geometry>
-          <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+          <!--<cylinder length="${wheel_length}" radius="${wheel_radius}"/>-->
+          <mesh filename="package://robucar_description/meshes/robufast_wheel_d0_56.dae"/>
 				</geometry>
         <material name="black">
           <color rgba="0 0 0 1"/>

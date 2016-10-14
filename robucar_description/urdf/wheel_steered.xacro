@@ -9,7 +9,7 @@
 
   <xacro:include filename="$(find robucar_description)/urdf/wheel.xacro" />
 
-  <xacro:macro name="wheel_steered" params="wheel_prefix parent_link wheel_origin_y *joint_origin ">
+  <xacro:macro name="wheel_steered" params="wheel_prefix parent_link wheel_origin_y left_right *joint_origin ">
     <link name="${wheel_prefix}_steering">
       <visual>
         <origin xyz="0 ${-wheel_origin_y} 0" rpy="0 0 0"/>
@@ -52,7 +52,7 @@
       </joint>
     </transmission>
 
-    <xacro:wheel wheel_prefix="${wheel_prefix}" parent_link="${wheel_prefix}_steering">
+    <xacro:wheel wheel_prefix="${wheel_prefix}" parent_link="${wheel_prefix}_steering" left_right="${left_right}">
       <origin xyz="0 ${wheel_origin_y} 0" rpy="0 0 0" />
     </xacro:wheel>
   </xacro:macro>
