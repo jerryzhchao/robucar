@@ -1,6 +1,7 @@
 <launch>
 
   <arg name="model" default="_4ws"/>
+  <!--<arg name="model" default=""/>-->
   <include file="$(find robucar_description)/launch/description.launch">
     <arg name="model" default="$(arg model)"/>
   </include>

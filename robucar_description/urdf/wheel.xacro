@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="wheel">
 
-  <!--<xacro:property name="M_PI" default="3.14159"/>
-  <xacro:property name="wheel_length" default="0.09" />
-  <xacro:property name="wheel_radius" default="0.13" />-->
+  <!--<xacro:property name="M_PI" default="3.14159"/>-->
+  <!-- Wheel Properties -->
+  <xacro:property name="wheel_length" value="0.1" />
+  <xacro:property name="wheel_radius" value="0.28" />
   <xacro:property name="mass_wheel" value="5.0" />
 
   <xacro:macro name="wheel" params="wheel_prefix parent_link left_right *joint_origin">
