@@ -142,7 +142,7 @@
     <xacro:if value="$(arg velodyne_enabled)">
     <xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf.xacro"/>
     <HDL-32E parent="base_link" name="velodyne2" topic="/velodyne_points2">
-      <origin xyz="0 0 0.6" rpy="0 0 0" />
+      <origin xyz="${base_x_size/2-0.01} 0 ${base_z_size/2}" rpy="0 0 0" />
     </HDL-32E>
     </xacro:if>
 

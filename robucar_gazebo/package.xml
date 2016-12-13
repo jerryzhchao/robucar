@@ -23,7 +23,7 @@
   <run_depend>robucar_description</run_depend>
   <run_depend>robot_state_publisher</run_depend>
   <run_depend>rostopic</run_depend>
-  <run_depend>velodyne_simulator</run_depend>
+
 
   <export>
   </export>
