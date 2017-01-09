@@ -21,6 +21,7 @@
 <!--  <run_depend>hector_gazebo_plugins</run_depend>-->
 <!--  <run_depend>hector_gazebo_worlds</run_depend>-->
   <run_depend>robucar_description</run_depend>
+  <run_depend>robucar_control</run_depend>
   <run_depend>robot_state_publisher</run_depend>
   <run_depend>rostopic</run_depend>
 
