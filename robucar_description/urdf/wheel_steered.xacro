@@ -5,7 +5,7 @@
 
   <xacro:property name="steering_link_y" value="0.05" />
   <xacro:property name="steering_link_xz" value="0.1" />
-  <xacro:property name="steering_link_mass" value="5.0" />
+  <xacro:property name="steering_link_mass" value="30.0" />
 
   <xacro:include filename="$(find robucar_description)/urdf/wheel.xacro" />
 
