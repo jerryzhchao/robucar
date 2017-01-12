@@ -22,7 +22,7 @@
         <origin xyz="-0.5 -0.04 -0.06" rpy="0 0 ${M_PI/2.0}" />
         <geometry>
           <!--<box size="${base_x_size} ${base_y_size} ${base_z_size}"/>-->
-          <mesh filename="package://robucar_description/meshes/robufast_frame_0_72.dae"/>
+          <mesh filename="package://robucar_description/meshes/robufast_frame.dae"/>
         </geometry>
         <material name="grey">
           <color rgba="0.6 0.6 0.6 1"/>

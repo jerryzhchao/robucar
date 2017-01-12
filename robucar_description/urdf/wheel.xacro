@@ -26,7 +26,7 @@
         <origin xyz="0 0 0" rpy="${left_right * M_PI/2}  0 0" />
 				<geometry>
           <!--<cylinder length="${wheel_length}" radius="${wheel_radius}"/>-->
-          <mesh filename="package://robucar_description/meshes/robufast_wheel_d0_56.dae"/>
+          <mesh filename="package://robucar_description/meshes/robufast_wheel.dae"/>
 				</geometry>
         <material name="black">
           <color rgba="0 0 0 1"/>
