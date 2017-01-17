@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>robucar_control</name>
   <version>0.1.0</version>
   <description>Robucar controller configurations</description>
@@ -8,23 +8,23 @@
 
   <maintainer email="vincent.rousseau@irstea.fr">Vincent Rousseau</maintainer>
 
-  <license>BSD</license>
+  <license>GPLv3</license>
 
   <!--<url type="website">http://ros.org/wiki/robucar_control</url>-->
 
   <buildtool_depend>catkin</buildtool_depend>
-  <run_depend>interactive_marker_twist_server</run_depend>
-  <run_depend>ackermann_controller</run_depend>
-  <run_depend>four_wheel_steering_controller</run_depend>
-  <run_depend>joint_state_controller</run_depend>
-  <run_depend>joint_trajectory_controller</run_depend>
-  <run_depend>joy</run_depend>
-  <run_depend>robot_localization</run_depend>
-  <run_depend>rostopic</run_depend>
-  <run_depend>controller_manager</run_depend>
-  <run_depend>teleop_twist_joy</run_depend>
-  <run_depend>teleop_twist_keyboard</run_depend>
-  <run_depend>twist_mux</run_depend>
+  <depend>interactive_marker_twist_server</depend>
+  <depend>ackermann_controller</depend>
+  <depend>four_wheel_steering_controller</depend>
+  <depend>joint_state_controller</depend>
+  <depend>joint_trajectory_controller</depend>
+  <depend>joy</depend>
+  <depend>robot_localization</depend>
+  <depend>rostopic</depend>
+  <depend>controller_manager</depend>
+  <depend>teleop_twist_joy</depend>
+  <depend>teleop_twist_keyboard</depend>
+  <depend>twist_mux</depend>
 
   <export>
   </export>
