@@ -1,6 +1,0 @@
-robucar_node:
-  pid_parameters:
-    p: 0.15
-    i: 0.8
-    d: 0.0
-    i_clamp: 14.0
