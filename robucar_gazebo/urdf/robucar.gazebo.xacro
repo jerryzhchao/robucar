@@ -27,10 +27,10 @@
         <frameId>base_link</frameId>
         <topicName>navsat/fix</topicName>
         <velocityTopicName>navsat/vel_simul</velocityTopicName>
-        <referenceLatitude>49.9</referenceLatitude>
-        <referenceLongitude>8.9</referenceLongitude>
+        <referenceLatitude>45.76327</referenceLatitude>
+        <referenceLongitude>3.1094</referenceLongitude>
         <referenceHeading>0</referenceHeading>
-        <referenceAltitude>0</referenceAltitude>
+        <referenceAltitude>400</referenceAltitude>
         <drift>0.05 0.05 0.05</drift>
         <gaussianNoise>0.01 0.01 0.01</gaussianNoise>
         <velocityDrift>0 0 0</velocityDrift>
