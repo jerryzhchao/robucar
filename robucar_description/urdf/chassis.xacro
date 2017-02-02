@@ -9,6 +9,15 @@
   <xacro:property name="wheelbase" value="1.22" />
   <xacro:property name="track" value="1.23" />
 
+  <!-- Wheel Mounting Positions -->
+  <xacro:property name="ground_clearance" value="0.19" />
+  <xacro:property name="wheel_x_offset" value="0.0" />
+  <xacro:property name="wheel_y_offset" value="0.1" />
+
+  <!-- LIDAR Properties -->
+  <xacro:property name="lidar_ground_clearance" value="0.69" />
+  <xacro:property name="lidar_x_offset" value="0.4" />
+
   <xacro:macro name="chassis">
     <!-- Base footprint is on the ground under the robot -->
     <link name="base_footprint"/>
