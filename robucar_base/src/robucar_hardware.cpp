@@ -144,7 +144,7 @@ namespace robucar_base {
   /**
   * Pull latest speed and travel measurements from MCU, and store in joint structure for ros_control
   */
-  void RobucarHardware::updateJointsFromHardware()
+  void RobucarHardware::updateJointsFromHardware(ros::Duration &dt)
   {
     if(notifier_)
     {
@@ -168,6 +168,11 @@ namespace robucar_base {
         joints_[1].velocity = linearToAngular(frame_pure.getMotorState(FramePureDrive::FR)->getSpeed());
         joints_[2].velocity = linearToAngular(frame_pure.getMotorState(FramePureDrive::RL)->getSpeed());
         joints_[3].velocity = linearToAngular(frame_pure.getMotorState(FramePureDrive::RR)->getSpeed());
+
+        for(int i=0; i<4; ++i)
+        {
+          joints_[i].position += joints_[i].velocity*dt.toSec();
+        }
 
         steering_joints_[0].position = angle_front;
         steering_joints_[1].position = angle_front;

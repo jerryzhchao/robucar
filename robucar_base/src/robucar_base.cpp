@@ -16,7 +16,7 @@ void controlLoop(robucar_base::RobucarHardware &robucar,
   last_time = this_time;
 
   // Process control loop
-  robucar.updateJointsFromHardware();
+  robucar.updateJointsFromHardware(elapsed);
   cm.update(ros::Time::now(), elapsed);
   robucar.writeCommandsToHardware(elapsed);
 }

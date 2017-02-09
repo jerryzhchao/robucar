@@ -24,7 +24,7 @@ namespace robucar_base
 
     ~RobucarHardware();
 
-    void updateJointsFromHardware();
+    void updateJointsFromHardware(ros::Duration &dt);
 
     void writeCommandsToHardware(ros::Duration &dt);
 
