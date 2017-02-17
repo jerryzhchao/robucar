@@ -5,6 +5,7 @@
   <xacro:arg name="laser_enabled" default="false" />
   <xacro:arg name="camera_enabled" default="false" />
   <xacro:arg name="navsat_enabled" default="false" />
+  <xacro:arg name="velodyne_enabled" default="false" />
 
   <xacro:include filename="$(find robucar_description)/urdf/wheel_steered.xacro" />
   <xacro:include filename="$(find robucar_description)/urdf/chassis.xacro" />
@@ -63,12 +64,13 @@
       </joint>
     </xacro:if>
 
+    <xacro:if value="$(arg velodyne_enabled)">
+      <xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf.xacro"/>
+      <HDL-32E parent="base_link" name="velodyne2" topic="/velodyne_points2">
+        <origin xyz="${base_x_size/2-0.01} 0 ${base_z_size/2}" rpy="0 0 0" />
+      </HDL-32E>
+    </xacro:if>
 
-    <!--<link name="velodyne"/>
-    <joint name="velodyne_joint" type="fixed">
-      <origin xyz="0.0 0.0 1.0" rpy="0 0 0" />
-      <parent link="base_link" />
-      <child link="velodyne" />
-    </joint>-->
+
   </xacro:macro>
 </robot>
