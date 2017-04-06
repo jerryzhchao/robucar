@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="chassis">
   <!-- Base Properties -->
-  <xacro:property name="mass_base" value="340" />
+  <xacro:property name="mass_base" value="10" />
   <xacro:property name="base_x_size" value="1.66000" />
   <xacro:property name="base_y_size" value="0.60000" />
   <xacro:property name="base_z_size" value="0.66000" />
@@ -12,7 +12,7 @@
   <!-- Wheel Mounting Positions -->
   <xacro:property name="ground_clearance" value="0.19" />
   <xacro:property name="wheel_x_offset" value="0.0" />
-  <xacro:property name="wheel_y_offset" value="0.1" />
+  <xacro:property name="wheel_y_offset" value="0.0" />
 
   <!-- LIDAR Properties -->
   <xacro:property name="lidar_ground_clearance" value="0.69" />
@@ -52,11 +52,11 @@
     <!-- Interial link stores the robot's inertial information -->
     <link name="inertial_link">
       <inertial>
-        <mass value="340" />
+        <mass value="${mass_base}" />
         <origin xyz="0 0 0" />
-        <inertia ixx="${mass_base/12.0 * (base_y_size*base_y_size + base_z_size*base_z_size)}" ixy="0" ixz="0"
-                 iyy="${mass_base/12.0 * (base_x_size*base_x_size + base_z_size*base_z_size)}" iyz="0"
-                 izz="${mass_base/12.0 * (base_y_size*base_y_size + base_x_size*base_x_size)}" />
+        <inertia ixx="0.21666666666666667" ixy="0" ixz="0"
+                 iyy="0.8416666666666667" iyz="0"
+                 izz="1.0416666666666667" />
       </inertial>
     </link>
 
