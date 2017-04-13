@@ -57,7 +57,7 @@
     <xacro:if value="$(arg navsat_enabled)">
       <link name="navsat_link"/>
       <joint name="navsat_joint" type="fixed">
-        <origin xyz="0.3 0 0.3" rpy="0 0 0" />
+        <origin xyz="${-wheelbase/2} 0 0.3" rpy="0 0 0" />
         <parent link="base_link" />
         <child link="navsat_link" />
       </joint>

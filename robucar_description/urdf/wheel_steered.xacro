@@ -39,6 +39,7 @@
       <child link="${wheel_prefix}_steering"/>
       <xacro:insert_block name="joint_origin"/>
       <dynamics damping="0.7"/>
+      <!--<dynamics damping="10.0" friction="20.0" />-->
     </joint>
 
     <transmission name="${wheel_prefix}_steering_trans" type="SimpleTransmission">

@@ -20,23 +20,26 @@
       </plugin>
     </gazebo>
 
-    <gazebo>
-      <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
-        <updateRate>10</updateRate>
-        <bodyName>base_link</bodyName>
-        <frameId>base_link</frameId>
-        <topicName>navsat/fix</topicName>
-        <velocityTopicName>navsat/vel_simul</velocityTopicName>
-        <referenceLatitude>45.76327</referenceLatitude>
-        <referenceLongitude>3.1094</referenceLongitude>
-        <referenceHeading>0</referenceHeading>
-        <referenceAltitude>400</referenceAltitude>
-        <drift>0.05 0.05 0.05</drift>
-        <gaussianNoise>0.01 0.01 0.01</gaussianNoise>
-        <velocityDrift>0 0 0</velocityDrift>
-        <velocityGaussianNoise>0.01 0.01 0.01</velocityGaussianNoise>
-      </plugin>
-    </gazebo>
+
+    <xacro:if value="$(arg navsat_enabled)">
+      <gazebo>
+        <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
+          <updateRate>10</updateRate>
+          <bodyName>navsat_link</bodyName>
+          <frameId>navsat_link</frameId>
+          <topicName>navsat/fix</topicName>
+          <velocityTopicName>navsat/vel_simul</velocityTopicName>
+          <referenceLatitude>45.76327</referenceLatitude>
+          <referenceLongitude>3.1094</referenceLongitude>
+          <referenceHeading>0</referenceHeading>
+          <referenceAltitude>400</referenceAltitude>
+          <drift>0.05 0.05 0.05</drift>
+          <gaussianNoise>0.01 0.01 0.01</gaussianNoise>
+          <velocityDrift>0 0 0</velocityDrift>
+          <velocityGaussianNoise>0.01 0.01 0.01</velocityGaussianNoise>
+        </plugin>
+      </gazebo>
+    </xacro:if>
 
     <xacro:if value="$(arg laser_enabled)">
       <gazebo reference="laser_bracket_link">
