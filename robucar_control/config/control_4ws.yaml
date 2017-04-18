@@ -41,7 +41,7 @@ robucar_velocity_controller:
 # https://github.com/ros-simulation/gazebo_ros_pkgs/issues/479
 gazebo_ros_control:
   pid_gains:
-    front_left_steering_joint: {p: 1000.0, i: 0.0, d: 20.0}
-    front_right_steering_joint: {p: 1000.0, i: 0.0, d: 20.0}
-    rear_left_steering_joint: {p: 1000.0, i: 0.0, d: 20.0}
-    rear_right_steering_joint: {p: 1000.0, i: 0.0, d: 20.0}
+    front_left_steering_joint: {p: 1000.0, i: 0.0, d: 0.0}
+    front_right_steering_joint: {p: 1000.0, i: 0.0, d: 0.0}
+    rear_left_steering_joint: {p: 1000.0, i: 0, d: 0}
+    rear_right_steering_joint: {p: 1000.0, i: 0, d: 0}
