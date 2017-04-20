@@ -5,7 +5,7 @@
 
   <xacro:property name="steering_link_y" value="0.05" />
   <xacro:property name="steering_link_xz" value="0.1" />
-  <xacro:property name="steering_link_mass" value="30.0" />
+  <xacro:property name="steering_link_mass" value="0.4" />
 
   <xacro:include filename="$(find robucar_description)/urdf/wheel.xacro" />
 
@@ -23,17 +23,18 @@
       <inertial>
         <mass value="${steering_link_mass}" />
         <origin xyz="0 0 0" />
-        <!--<inertia ixx="1.0" ixy="0" ixz="0"
-                 iyy="1.0" iyz="0"
-                 izz="1.0"/>-->
-        <inertia  ixx="${steering_link_mass/12.0 * (steering_link_y*steering_link_y + steering_link_xz*steering_link_xz)}" ixy="0" ixz="0"
+
+        <inertia ixx="0.0030791666666666667" ixy="0" ixz="0"
+                 iyy="0.0030791666666666667" iyz="0"
+                 izz="0.0030791666666666667"/>
+        <!--<inertia  ixx="${steering_link_mass/12.0 * (steering_link_y*steering_link_y + steering_link_xz*steering_link_xz)}" ixy="0" ixz="0"
                   iyy="${steering_link_mass/12.0 * (steering_link_xz*steering_link_xz + steering_link_xz*steering_link_xz)}" iyz="0"
-                  izz="${steering_link_mass/12.0 * (steering_link_y*steering_link_y + steering_link_xz*steering_link_xz)}" />
+                  izz="${steering_link_mass/12.0 * (steering_link_y*steering_link_y + steering_link_xz*steering_link_xz)}" />-->
       </inertial>
     </link>
 
     <joint name="${wheel_prefix}_steering_joint" type="revolute">
-      <limit lower="${-M_PI/6}" upper="${M_PI/6}" effort="1000.0" velocity="2.0"/>
+      <limit lower="${-M_PI/6}" upper="${M_PI/6}" effort="1000.0" velocity="1.0"/>
       <axis xyz="0 0 1"/>
       <parent link="${parent_link}"/>
       <child link="${wheel_prefix}_steering"/>
