@@ -31,7 +31,7 @@
           <velocityTopicName>navsat/vel_simul</velocityTopicName>
           <referenceLatitude>45.76327</referenceLatitude>
           <referenceLongitude>3.1094</referenceLongitude>
-          <referenceHeading>0</referenceHeading>
+          <referenceHeading>90.0</referenceHeading>
           <referenceAltitude>400</referenceAltitude>
           <drift>0.05 0.05 0.05</drift>
           <gaussianNoise>0.01 0.01 0.01</gaussianNoise>

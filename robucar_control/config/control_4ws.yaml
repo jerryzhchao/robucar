@@ -18,7 +18,7 @@ robucar_velocity_controller:
 
   # Odometry fused with IMU is published by robot_localization, so
   # no need to publish a TF based on encoders alone.
-  enable_odom_tf: false
+  enable_odom_tf: true
 
   enable_twist_cmd: false
 
@@ -39,9 +39,9 @@ robucar_velocity_controller:
 
 # Work around to use pid controller on Gazebo 7
 # https://github.com/ros-simulation/gazebo_ros_pkgs/issues/479
-#/gazebo_ros_control:
-  #pid_gains:
-    #front_left_steering_joint: {p: 100.0, i: 0.01, d: 10.0}
-    #front_right_steering_joint: {p: 100.0, i: 0.01, d: 10.0}
-    #rear_left_steering_joint: {p: 100.0, i: 0.01, d: 10.0}
-    #rear_right_steering_joint: {p: 100.0, i: 0.01, d: 10.0}
+/gazebo_ros_control:
+  pid_gains:
+    front_left_steering_joint: {p: 1000.0, i: 0.01, d: 10.0}
+    front_right_steering_joint: {p: 1000.0, i: 0.01, d: 10.0}
+    rear_left_steering_joint: {p: 1000.0, i: 0.01, d: 10.0}
+    rear_right_steering_joint: {p: 1000.0, i: 0.01, d: 10.0}
