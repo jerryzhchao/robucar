@@ -55,12 +55,25 @@
     </xacro:if>
 
     <xacro:if value="$(arg navsat_enabled)">
-      <link name="navsat_link"/>
-      <joint name="navsat_joint" type="fixed">
+      <link name="navsat_link">
+        <inertial>
+          <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+          <mass value="0.015" />  <!-- [kg] -->
+          <origin xyz="0 0 0" rpy="0 0 0" />
+        </inertial>
+      </link>
+
+      <joint name="navsat_joint" type="revolute">
         <origin xyz="${-wheelbase/2} 0 0.3" rpy="0 0 0" />
         <parent link="base_link" />
         <child link="navsat_link" />
+        <limit upper="0" lower="0" effort="0" velocity="0" />
       </joint>
+      <!--<joint name="navsat_joint" type="fixed">
+        <origin xyz="${-wheelbase/2} 0 0.3" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="navsat_link" />
+      </joint>-->
     </xacro:if>
 
 
