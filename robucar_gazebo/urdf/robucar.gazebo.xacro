@@ -37,6 +37,7 @@
           <gaussianNoise>0.01 0.01 0.01</gaussianNoise>
           <velocityDrift>0 0 0</velocityDrift>
           <velocityGaussianNoise>0.01 0.01 0.01</velocityGaussianNoise>
+          <status>2</status> <!-- Gps rtk : NavSatStatus::STATUS_GBAS_FIX -->
         </plugin>
       </gazebo>
     </xacro:if>
