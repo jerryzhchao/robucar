@@ -16,7 +16,7 @@
 
   <!-- LIDAR Properties -->
   <xacro:property name="lidar_ground_clearance" value="0.69" />
-  <xacro:property name="lidar_x_offset" value="0.4" />
+  <xacro:property name="lidar_x_offset" value="0.9" />
 
   <xacro:macro name="chassis">
     <!-- Base footprint is on the ground under the robot -->
