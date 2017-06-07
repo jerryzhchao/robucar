@@ -11,8 +11,8 @@
     <gazebo reference="${wheel_prefix}_wheel_link">
       <material>Gazebo/Black</material>
     </gazebo>
-		<link name="${wheel_prefix}_wheel_link">
-			<inertial>
+    <link name="${wheel_prefix}_wheel_link">
+      <inertial>
         <mass value="${mass_wheel}" />
         <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
         <inertia ixx="0.0030791666666666667" ixy="0" ixz="0"
@@ -23,48 +23,48 @@
                   iyy="${mass_wheel*wheel_radius*wheel_radius/2.0}" iyz="0"
                   izz="${mass_wheel/4.0*(wheel_radius*wheel_radius+wheel_length*wheel_length/3.0)}" />-->
       </inertial>
-			<visual>
+      <visual>
         <origin xyz="0 0 0" rpy="${left_right * M_PI/2}  0 0" />
-				<geometry>
+        <geometry>
           <!--<cylinder length="${wheel_length}" radius="${wheel_radius}"/>-->
           <mesh filename="package://robucar_description/meshes/robufast_wheel.dae"/>
-				</geometry>
+        </geometry>
         <material name="black">
           <color rgba="0 0 0 1"/>
         </material>
-			</visual>
-			<collision>
-				<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
         <geometry>
           <cylinder length="${wheel_length}" radius="${wheel_radius}" />
-				</geometry>
-			</collision>
-		</link>
+        </geometry>
+      </collision>
+    </link>
 
     <!--<gazebo reference="${wheel_prefix}_wheel_link">
-			<mu1 value="1.0"/>
-			<mu2 value="1.0"/>
-			<kp value="10000000.0" />
-			<kd value="1.0" />
-			<fdir1 value="1 0 0"/>
+      <mu1 value="1.0"/>
+      <mu2 value="1.0"/>
+      <kp value="10000000.0" />
+      <kd value="1.0" />
+      <fdir1 value="1 0 0"/>
     </gazebo>-->
 
-		<joint name="${wheel_prefix}_wheel" type="continuous">
+    <joint name="${wheel_prefix}_wheel" type="continuous">
       <parent link="${parent_link}"/>
-			<child link="${wheel_prefix}_wheel_link"/>
+      <child link="${wheel_prefix}_wheel_link"/>
       <xacro:insert_block name="joint_origin"/>
-			<axis xyz="0 1 0" rpy="0 0 0" />
-		</joint>
+      <axis xyz="0 1 0" rpy="0 0 0" />
+    </joint>
 
-		<transmission name="${wheel_prefix}_wheel_trans" type="SimpleTransmission">
-			<type>transmission_interface/SimpleTransmission</type>
-			<actuator name="${wheel_prefix}_wheel_motor">
-				<mechanicalReduction>1</mechanicalReduction>
-			</actuator>
-			<joint name="${wheel_prefix}_wheel">
-				<hardwareInterface>VelocityJointInterface</hardwareInterface>
-			</joint>
-		</transmission>
+    <transmission name="${wheel_prefix}_wheel_trans" type="SimpleTransmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <actuator name="${wheel_prefix}_wheel_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+      <joint name="${wheel_prefix}_wheel">
+        <hardwareInterface>VelocityJointInterface</hardwareInterface>
+      </joint>
+    </transmission>
 
-	</xacro:macro>
+  </xacro:macro>
 </robot>
