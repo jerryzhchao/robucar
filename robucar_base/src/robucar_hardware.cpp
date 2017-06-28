@@ -33,9 +33,9 @@ namespace robucar_base {
     registerControlInterfaces();
 
     /// TODO replace it by dynamic reconfigure param
-    if(!nh_.getParam("robucar_velocity_controller/wheel_radius", wheel_radius_))
+    if(!nh_.getParam("wheel_radius", wheel_radius_))
     {
-      ROS_ERROR("The robucar_velocity_controller/wheel_radius parameters must be loaded");
+      ROS_WARN("The wheel_radius parameters must be loaded");
     }
     ROS_INFO_STREAM("Robucar hw config wheel_radius_ : "<<wheel_radius_);
 #ifndef NDEBUG
@@ -123,7 +123,6 @@ namespace robucar_base {
 
     ros::V_string steering_joint_names = boost::assign::list_of("front_left_steering_joint")("front_right_steering_joint")
                                                                ("rear_left_steering_joint")("rear_right_steering_joint");
-    //ros::NodeHandle controller_nh("robucar_velocity_controller");
 
     for (unsigned int i = 0; i < steering_joint_names.size(); i++)
     {

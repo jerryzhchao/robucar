@@ -38,11 +38,12 @@
     </xacro:wheel_steered>
 
     <xacro:if value="$(arg laser_enabled)">
-      <link name="base_laser"/>
+      <xacro:include filename="$(find lms1xx)/urdf/sick_lms1xx.urdf.xacro"/>
+      <xacro:sick_lms1xx />
       <joint name="laser_joint" type="fixed">
         <origin xyz="${lidar_x_offset} 0.0 ${lidar_ground_clearance - base_z_size/2 - ground_clearance}" rpy="0 0 0" />
         <parent link="base_link" />
-        <child link="base_laser" />
+        <child link="laser" />
       </joint>
     </xacro:if>
 

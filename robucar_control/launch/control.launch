@@ -4,7 +4,7 @@
   <arg name="model" default="" />
   <rosparam command="load" file="$(find robucar_control)/config/control$(arg model).yaml" />
   <node name="base_controller_spawner" pkg="controller_manager" type="spawner"
-        args="robucar_joint_publisher robucar_velocity_controller --shutdown-timeout 3"/>
+        args="vehicle_joint_publisher vehicle_controller --shutdown-timeout 3"/>
 
   <!--<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
     <rosparam command="load" file="$(find robucar_control)/config/localization.yaml" />
@@ -36,13 +36,13 @@
 
   <node pkg="twist_mux" type="twist_mux" name="twist_mux">
     <rosparam command="load" file="$(find robucar_control)/config/twist_mux.yaml" />
-    <remap from="cmd_vel_out" to="robucar_velocity_controller/cmd_vel"/>
+    <remap from="cmd_vel_out" to="vehicle_controller/cmd_vel"/>
   </node>-->
 
   <!--Teleop -->
-  <remap from="/joy_teleop/cmd_vel" to="/robucar_velocity_controller/cmd_vel"/>
-  <remap from="/joy_teleop/cmd_ackermann" to="/robucar_velocity_controller/cmd_ackermann"/>
-  <remap from="/joy_teleop/cmd_four_wheel_steering" to="/robucar_velocity_controller/cmd_four_wheel_steering"/>
+  <remap from="/joy_teleop/cmd_vel" to="/vehicle_controller/cmd_vel"/>
+  <remap from="/joy_teleop/cmd_ackermann" to="/vehicle_controller/cmd_ackermann"/>
+  <remap from="/joy_teleop/cmd_four_wheel_steering" to="/vehicle_controller/cmd_four_wheel_steering"/>
   <include file="$(find robucar_control)/launch/teleop.launch" />
   <!--<include file="$(find robucar_control)/launch/teleop_keyboard.launch" />-->
 </launch>

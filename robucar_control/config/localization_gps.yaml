@@ -7,7 +7,7 @@ two_d_mode: true
 
 frequency: 50
 
-odom0: robucar_velocity_controller/odom
+odom0: vehicle_controller/odom
 odom0_config: [false, false, false,
                false, false, false,
                true, true, true,

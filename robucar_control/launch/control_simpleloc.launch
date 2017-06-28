@@ -4,7 +4,7 @@
   <arg name="model" default="" />
   <rosparam command="load" file="$(find robucar_control)/config/control$(arg model).yaml" />
   <node name="base_controller_spawner" pkg="controller_manager" type="spawner"
-        args="robucar_joint_publisher robucar_velocity_controller --shutdown-timeout 3"/>
+        args="vehicle_joint_publisher vehicle_controller --shutdown-timeout 3"/>
 
   <!-- Publish a static tf transform between navsat_link and base_link for gazebo
        linked to this problem : http://answers.ros.org/question/44732/gps-hector-gazebo/
@@ -31,8 +31,8 @@
   </node>
 
   <!--Teleop -->
-  <remap from="/joy_teleop/cmd_vel" to="/robucar_velocity_controller/cmd_vel"/>
-  <remap from="/joy_teleop/cmd_ackermann" to="/robucar_velocity_controller/cmd_ackermann"/>
-  <remap from="/joy_teleop/cmd_four_wheel_steering" to="/robucar_velocity_controller/cmd_four_wheel_steering"/>
+  <remap from="/joy_teleop/cmd_vel" to="/vehicle_controller/cmd_vel"/>
+  <remap from="/joy_teleop/cmd_ackermann" to="/vehicle_controller/cmd_ackermann"/>
+  <remap from="/joy_teleop/cmd_four_wheel_steering" to="/vehicle_controller/cmd_four_wheel_steering"/>
   <include file="$(find robucar_control)/launch/teleop.launch" />
 </launch>
