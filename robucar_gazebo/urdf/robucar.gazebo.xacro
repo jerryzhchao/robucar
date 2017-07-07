@@ -42,13 +42,6 @@
       </gazebo>
     </xacro:if>
 
-    <xacro:if value="$(arg laser_enabled)">
-      <gazebo reference="laser_bracket_link">
-        <material>Gazebo/DarkGrey</material>
-      </gazebo>
-      <xacro:sick_lms100_gazebo prefix="base"/>
-    </xacro:if>
-
     <xacro:if value="$(arg camera_enabled)">
       <xacro:kinect_camera_gazebo prefix="camera"/>
     </xacro:if>

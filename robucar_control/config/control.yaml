@@ -21,10 +21,6 @@ vehicle_controller:
 
   enable_twist_cmd: false
 
-  #wheel_separation: 1.23
-  #wheel_radius: 0.28
-  #wheel_base: 1.22
-
   # Velocity and acceleration limits
   # Whenever a min_* is unspecified, default to -max_*
   linear:

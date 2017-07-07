@@ -6,6 +6,11 @@
   <node name="base_controller_spawner" pkg="controller_manager" type="spawner"
         args="vehicle_joint_publisher vehicle_controller --shutdown-timeout 3"/>
 
+  <!-- Publish a static tf transform between navsat_link and base_link for gazebo
+       linked to this problem : http://answers.ros.org/question/44732/gps-hector-gazebo/
+       BUT IF YOU CHANGE THE NAVAST_LINK POSITION IN URDF YOU NEED TO CHANGE IT HERE TOO ! -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="navsat_link_broadcaster" args="-0.61 0 0.3 0 0 0 1 base_link navsat_link" />
+
   <!--<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
     <rosparam command="load" file="$(find robucar_control)/config/localization.yaml" />
   </node>-->
