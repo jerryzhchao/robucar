@@ -5,13 +5,6 @@
 
 using namespace robucar_communication;
 
-namespace {
-  const float TICKS_PER_METER = 345; //345 based upon the diameter of the wheel including the track, 452 based upon the diamater of the wheel excluding the track. 345 works best inside the lab, 452 works best on the carpet outside
-  const uint ENCODER_MIN = 0;
-  const uint ENCODER_MAX = 32767;
-  const uint PULSES_PER_REVOLUTION = 185;//190; // for speed encoder
-}
-
 namespace robucar_base {
 
   /**
