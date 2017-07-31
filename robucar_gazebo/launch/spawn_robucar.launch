@@ -6,7 +6,7 @@
   <arg name="velodyne_enabled" default="false"/>
   <arg name="robot_initial_pose" default="-y 0 -Y 0"/>
 
-  <arg name="model" default=""/>
+  <arg name="model" default="_4ws"/>
 
   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robucar_gazebo)/urdf/description$(arg model).gazebo.xacro
     laser_enabled:=$(arg laser_enabled)
@@ -20,8 +20,6 @@
   <node name="spawn_robucar_model" pkg="gazebo_ros" type="spawn_model"
     args="$(arg robot_initial_pose) -unpause -urdf -z 0.5 -param robot_description -model mobile_base"/>
 
-  <include file="$(find robucar_control)/launch/control_simpleloc.launch">
-    <arg name="model" value="$(arg model)"/>
-  </include>
+  <include file="$(find four_wheel_steering_control)/launch/control_simpleloc.launch"/>
 
 </launch>
