@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <robot name="robucar_robot_gazebo" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find robucar_gazebo)/urdf/accessories/sick_lms100.gazebo.xacro"/>
   <xacro:include filename="$(find robucar_gazebo)/urdf/accessories/kinect_camera.gazebo.xacro"/>
 
   <xacro:macro name="robucar_robot_gazebo">
