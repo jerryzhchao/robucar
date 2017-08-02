@@ -62,7 +62,9 @@
         <mechanicalReduction>1</mechanicalReduction>
       </actuator>
       <joint name="${wheel_prefix}_wheel">
-        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        <!--<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>-->
+        <!-- deprecated in kinetic -->
+        <hardwareInterface>VelocityJointInterface</hardwareInterface>
       </joint>
     </transmission>
 
