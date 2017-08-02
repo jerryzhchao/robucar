@@ -49,6 +49,8 @@
       </actuator>
       <joint name="${wheel_prefix}_steering_joint">
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <!-- deprecated in kinetic -->
+        <hardwareInterface>PositionJointInterface</hardwareInterface>
       </joint>
     </transmission>
 
