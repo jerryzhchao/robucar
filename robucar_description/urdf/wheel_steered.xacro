@@ -49,7 +49,7 @@
       </actuator>
       <joint name="${wheel_prefix}_steering_joint">
         <!--<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>-->
-        <!-- deprecated in kinetic -->
+        <!-- deprecated in kinetic but only way to make it works on indigo -->
         <hardwareInterface>PositionJointInterface</hardwareInterface>
       </joint>
     </transmission>
