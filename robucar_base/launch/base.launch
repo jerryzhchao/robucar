@@ -19,8 +19,9 @@
   </node>
 
   <!-- Differential controller parameters and basic localization -->
-  <include file="$(find robucar_control)/launch/control.launch" >
+   <include file="$(find four_wheel_steering_control)/launch/control_simpleloc.launch" />
+  <!-- <include file="$(find robucar_control)/launch/control.launch" >
     <arg name="model" default="$(arg model)" />
-  </include>
+  </include> -->
 
 </launch>

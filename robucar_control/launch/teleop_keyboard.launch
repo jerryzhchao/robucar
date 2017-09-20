@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <group ns="keyboard_teleop">
-    <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard"/>
-  </group>
-
-</launch>
