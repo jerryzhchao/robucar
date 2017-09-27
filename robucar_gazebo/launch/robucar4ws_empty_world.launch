@@ -20,7 +20,6 @@
     <arg name="robot_initial_pose" value="$(arg robot_initial_pose)"/>
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="camera_enabled" value="$(arg camera_enabled)"/>
-    <arg name="model" value="_4ws"/>
   </include>
 
 </launch>

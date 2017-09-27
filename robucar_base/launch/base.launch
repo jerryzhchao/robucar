@@ -7,7 +7,7 @@
   <include file="$(find four_wheel_steering_description)/launch/description.launch">
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="camera_enabled" value="$(arg camera_enabled)"/>
-    <arg name="urdf_path" value="$(robucar_description)/urdf/robucar.urdf.xacro" />
+    <arg name="urdf_path" value="$(find robucar_description)/urdf/robucar.urdf.xacro" />
   </include>
 
   <!-- Robucar harware driver -->

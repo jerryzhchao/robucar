@@ -6,9 +6,7 @@
   <arg name="velodyne_enabled" default="false"/>
   <arg name="robot_initial_pose" default="-y 0 -Y 0"/>
 
-  <arg name="model" default="_4ws"/>
-
-  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robucar_gazebo)/urdf/description$(arg model).gazebo.xacro
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robucar_gazebo)/urdf/description.gazebo.xacro
     laser_enabled:=$(arg laser_enabled)
     camera_enabled:=$(arg camera_enabled)
     velodyne_enabled:=$(arg velodyne_enabled)
