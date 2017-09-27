@@ -6,7 +6,7 @@
   <arg name="velodyne_enabled" default="true"/>
 
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
-  <include file="$(find robucar_gazebo)/launch/robucar_empty_world.launch">
+  <include file="$(find robucar_gazebo)/launch/empty_world.launch">
     <arg name="world_name" value="$(find hector_gazebo_worlds)/worlds/rolling_landscape_120m.world"/>
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="camera_enabled" value="$(arg camera_enabled)"/>
