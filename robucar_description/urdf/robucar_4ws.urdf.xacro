@@ -1,88 +1,56 @@
 <?xml version="1.0"?>
 
-<robot name="robucar" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="robufast" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:arg name="laser_enabled" default="false" />
   <xacro:arg name="camera_enabled" default="false" />
   <xacro:arg name="navsat_enabled" default="false" />
+  <xacro:arg name="velodyne_enabled" default="false" />
 
-  <xacro:include filename="$(find robucar_description)/urdf/wheel_steered.xacro" />
-  <xacro:include filename="$(find robucar_description)/urdf/chassis.xacro" />
+  <xacro:include filename="$(find four_wheel_steering_description)/urdf/chassis.xacro" />
+  <xacro:include filename="$(find four_wheel_steering_description)/urdf/sensors.xacro" />
 
-  <xacro:property name="M_PI" value="3.14159"/>
+  <!-- Base Properties -->
+  <xacro:property name="base_x_size" value="1.66000" />
+  <xacro:property name="base_y_size" value="0.60000" />
+  <xacro:property name="base_z_size" value="0.66000" />
 
-  <xacro:macro name="robucar">
+  <xacro:property name="wheelbase" value="1.2" />
+  <xacro:property name="track" value="1.1" />
+  <xacro:property name="mass_base" value="500" />
 
-    <xacro:chassis/>
+  <!-- Wheel Properties -->
+  <xacro:property name="steering_link_mass" value="30" />
+  <xacro:property name="mass_wheel" value="5" />
+  <xacro:property name="wheel_length" value="0.2" />
+  <xacro:property name="wheel_radius" value="0.45" />
 
-    <!-- IMU Link is the standard mounting position for the IMU.-->
-    <link name="imu_link"/>
-    <joint name="imu_joint" type="fixed">
-      <origin xyz="0.35 0 0.1" rpy="0 0 0" />
-      <parent link="base_link" />
-      <child link="imu_link" />
-    </joint>
+  <!-- Wheel Mounting Positions -->
+  <xacro:property name="ground_clearance" value="0.35" />
+  <xacro:property name="wheel_x_offset" value="0.0" />
+  <xacro:property name="wheel_y_offset" value="0.1" />
 
-    <!-- Wheel macros -->
-    <xacro:wheel_steered wheel_prefix="front_left" parent_link="base_link" wheel_origin_y="${wheel_y_offset}"  left_right="-1">
-      <origin xyz="${wheelbase/2+wheel_x_offset} ${track/2-wheel_y_offset} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
-    </xacro:wheel_steered>
-    <xacro:wheel_steered wheel_prefix="front_right" parent_link="base_link" wheel_origin_y="${-wheel_y_offset}"  left_right="1">
-      <origin xyz="${wheelbase/2+wheel_x_offset} ${-track/2+wheel_y_offset} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
-    </xacro:wheel_steered>
-    <xacro:wheel_steered wheel_prefix="rear_left" parent_link="base_link" wheel_origin_y="${wheel_y_offset}"  left_right="-1">
-      <origin xyz="${-wheelbase/2+wheel_x_offset} ${track/2-wheel_y_offset} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
-    </xacro:wheel_steered>
-    <xacro:wheel_steered wheel_prefix="rear_right" parent_link="base_link" wheel_origin_y="${-wheel_y_offset}"  left_right="1">
-      <origin xyz="${-wheelbase/2+wheel_x_offset} ${-track/2+wheel_y_offset} ${-base_z_size/2 + wheel_radius - ground_clearance}" rpy="0 0 0" />
-    </xacro:wheel_steered>
+  <!-- LIDAR Properties -->
+  <xacro:property name="lidar_ground_clearance" value="0.69" />
+  <xacro:property name="lidar_x_offset" value="1.2" />
 
-    <xacro:if value="$(arg laser_enabled)">
-      <xacro:include filename="$(find lms1xx)/urdf/sick_lms1xx.urdf.xacro"/>
-      <xacro:sick_lms1xx />
-      <joint name="laser_joint" type="fixed">
-        <origin xyz="${lidar_x_offset} 0.0 ${lidar_ground_clearance - base_z_size/2 - ground_clearance}" rpy="0 0 0" />
-        <parent link="base_link" />
-        <child link="laser" />
-      </joint>
-    </xacro:if>
+  <xacro:macro name="robufast">
 
-    <xacro:if value="$(arg camera_enabled)">
-      <link name="camera_link"/>
-      <joint name="camera_joint" type="fixed">
-        <origin xyz="0.35 0 0.41" rpy="0 0 0" />
-        <parent link="base_link" />
-        <child link="camera_link" />
-      </joint>
-    </xacro:if>
+    <xacro:chassis>
+      <!-- visual chassis -->
+      <visual>
+        <origin xyz="0.03 0 ${-base_z_size/2}" rpy="0 0 ${M_PI/2.0}" />
+        <geometry>
+          <mesh filename="package://robucar_description/meshes/chassis.dae"/>
+        </geometry>
+      </visual>
+      <!-- visual steering -->
+      <mesh filename="package://robucar_description/meshes/wheel_steered.dae"/>
+      <!-- visual wheel -->
+      <mesh filename="package://robucar_description/meshes/wheel.dae"/>
+    </xacro:chassis>
+    <xacro:sensors/>
 
-    <xacro:if value="$(arg navsat_enabled)">
-      <link name="navsat_link">
-        <inertial>
-          <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
-          <mass value="0.015" />  <!-- [kg] -->
-          <origin xyz="0 0 0" rpy="0 0 0" />
-        </inertial>
-      </link>
-      <joint name="navsat_joint" type="revolute">
-        <origin xyz="${-wheelbase/2} 0 0.3" rpy="0 0 0" />
-        <parent link="base_link" />
-        <child link="navsat_link" />
-        <limit upper="0" lower="0" effort="0" velocity="0" />
-      </joint>
-      <!--<joint name="navsat_joint" type="fixed">
-        <origin xyz="${-wheelbase/2} 0 0.3" rpy="0 0 0" />
-        <parent link="base_link" />
-        <child link="navsat_link" />
-      </joint>-->
-    </xacro:if>
-
-
-    <!--<link name="velodyne"/>
-    <joint name="velodyne_joint" type="fixed">
-      <origin xyz="0.0 0.0 1.0" rpy="0 0 0" />
-      <parent link="base_link" />
-      <child link="velodyne" />
-    </joint>-->
   </xacro:macro>
+  <xacro:robufast />
 </robot>

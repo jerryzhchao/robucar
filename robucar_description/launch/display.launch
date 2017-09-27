@@ -1,14 +1,5 @@
 <launch>
-
-  <arg name="model" default="_4ws"/>
-  <!--<arg name="model" default=""/>-->
-  <include file="$(find robucar_description)/launch/description.launch">
-    <arg name="model" default="$(arg model)"/>
+  <include file="$(find four_wheel_steering_description)/launch/display.launch">
+    <arg name="urdf_path" value="$(find robucar_description)/urdf/robucar_4ws.urdf.xacro"/>
   </include>
-
-  <arg name="rvizconfig" default="$(find robucar_description)/rviz/urdf.rviz" />
-  <param name="use_gui" value="true"/>
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
-
 </launch>
