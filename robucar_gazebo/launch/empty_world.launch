@@ -3,25 +3,18 @@
 
   <arg name="world_name" default="worlds/empty.world"/>
 
-  <arg name="laser_enabled" default="false"/>
+  <arg name="laser_enabled" default="true"/>
   <arg name="camera_enabled" default="false"/>
   <arg name="velodyne_enabled" default="false"/>
   <arg name="robot_initial_pose" default="-y 0 -Y 0"/>
 
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(arg world_name)"/> <!-- world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
-    <arg name="paused" value="false"/>
-    <arg name="use_sim_time" value="true"/>
-    <arg name="gui" value="true"/>
-    <arg name="headless" value="false"/>
-    <arg name="debug" value="false"/>
-  </include>
-
-  <include file="$(find robucar_gazebo)/launch/spawn_robucar.launch">
+  <include file="$(find four_wheel_steering_gazebo)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/>
     <arg name="robot_initial_pose" value="$(arg robot_initial_pose)"/>
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="camera_enabled" value="$(arg camera_enabled)"/>
     <arg name="velodyne_enabled" value="$(arg velodyne_enabled)"/>
+    <arg name="urdf_path" value="$(find robucar_description)/urdf/robucar.urdf.xacro"/>
   </include>
 
 </launch>
