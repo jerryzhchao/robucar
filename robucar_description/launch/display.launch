@@ -1,5 +1,5 @@
 <launch>
   <include file="$(find four_wheel_steering_description)/launch/display.launch">
-    <arg name="urdf_path" value="$(find robucar_description)/urdf/robucar_4ws.urdf.xacro"/>
+    <arg name="urdf_path" value="$(find robucar_description)/urdf/robucar.urdf.xacro"/>
   </include>
 </launch>
